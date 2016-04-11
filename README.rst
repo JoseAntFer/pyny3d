@@ -87,12 +87,10 @@ will be guaranteed only for convex polygons and bodies.
 Upcoming improvements
 ~~~~~~~~~~~~~~~~~~~~~
 
-    * Space.stretch method.
-    * Computes volumes and areas.
+    * ``.stretch()`` method.
+    * Compute volumes and areas.
     * Extrude polyhedra on arbitrary directions.
-    * Extrude a single polyhedra besides the projection intersects multiple
-      polygons.
-    * zrotate -> rotate(ang, axis='z')
+    * Rotate about arbitrary axes.
 
 Bugs
 ~~~~
