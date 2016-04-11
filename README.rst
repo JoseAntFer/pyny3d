@@ -46,7 +46,7 @@ Very simple example using some basic funtionalities:
     S.viz.exposure_plot()
 
 .. image:: cover.png
-   :scale: 50%
+   :scale: 30%
    :align: center
 
 Miscelaneous
