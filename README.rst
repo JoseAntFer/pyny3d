@@ -45,7 +45,7 @@ Very simple example using some basic funtionalities:
     # Viz
     S.viz.exposure_plot()
 
-.. image:: cover.png
+.. image:: http://postimg.org/image/3pl27ud41/
 
 Miscelaneous
 ------------
