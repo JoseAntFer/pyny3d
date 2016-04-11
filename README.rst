@@ -44,7 +44,7 @@ Very simple example using some basic funtionalities::
     # Viz
     S.viz.exposure_plot()
 
-.. figure:: ../images/cover.png
+.. figure:: cover.png
    :scale: 100%
    :align: center
 
