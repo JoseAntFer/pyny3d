@@ -13,8 +13,8 @@ to perform solar shadowing simulations and timeseries data projections
 or coded autonomously or alongside with other codes.
 
 It is built on top of numpy, scipy, matplotlib and shapely. It uses two 
-well-known 2D geometry objects (`matplotlib.Path.path` and 
-`shapely.geometry.Polygon`) to safely compute a wide range of planar operations
+well-known 2D geometry objects (``matplotlib.Path.path`` and 
+``shapely.geometry.Polygon``) to safely compute a wide range of planar operations
 at reasonable speed, without the need for the user to worry about the low-level
 workflow.
 
@@ -52,8 +52,8 @@ Miscelaneous
 ------------
 Disclaimer
 ~~~~~~~~~~
-`pyny3d` is developing in a educational and reseach environment by 
-civil engineers in order to create a **very easy to use and intuitive**
+*pyny3d* is being developed in a educational and reseach environment by 
+a civil engineer with the aim of creating a **very easy to use and intuitive**
 library. For these reason, I do not recommend to use it in applications
 where geometries could be very complex or if the performance is a determinant 
 factor.
@@ -77,9 +77,9 @@ Use the pip install way: ``\$ pip install pyny3d``
    
 Roadmap and Maintenance
 ~~~~~~~~~~~~~~~~~~~~~~~
-`pyny3d` is far from be the full-featured and optimized library I expect. 
-Releasing v0.1 allows me to start receiving feedback from users and will help
-me to continue developing better and faster.
+*pyny3d* is far from be the full-featured and optimized library that is expected. 
+Releasing alpha versions allows me to start receiving feedback from users and will 
+help me to continue developing better and faster.
 
 On the other hand, I want to advice that the inclusion of non-straight lines
 or non-planar surfaces are not expected. In the same way, all the computations
