@@ -73,7 +73,7 @@ Requirements
 
 Installing pyny3d
 ~~~~~~~~~~~~~~~~~
-Use the pip install way: ``\$ pip install pyny3d``
+Use the pip install way: ``$ pip install pyny3d``
    
 Roadmap and Maintenance
 ~~~~~~~~~~~~~~~~~~~~~~~
