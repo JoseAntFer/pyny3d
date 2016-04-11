@@ -45,7 +45,7 @@ Very simple example using some basic funtionalities:
     # Viz
     S.viz.exposure_plot()
 
-.. image:: http://s16.postimg.org/qea97euhx/cover.png
+.. image:: https://github.com/JoseAntFer/pyny3d/blob/master/cover.png?raw=true
    :scale: 50%
 
 Miscelaneous
