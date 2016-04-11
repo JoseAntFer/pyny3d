@@ -45,8 +45,8 @@ Very simple example using some basic funtionalities:
     # Viz
     S.viz.exposure_plot()
 
-.. figure:: cover.png
-   :scale: 100%
+.. image:: cover.png
+   :scale: 50%
    :align: center
 
 Miscelaneous
@@ -74,7 +74,7 @@ Requirements
 
 Installing pyny3d
 ~~~~~~~~~~~~~~~~~
-Use the pip install way: \$ pip install pyny3d
+Use the pip install way: ``\$ pip install pyny3d``
    
 Roadmap and Maintenance
 ~~~~~~~~~~~~~~~~~~~~~~~
