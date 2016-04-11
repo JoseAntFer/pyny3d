@@ -46,6 +46,7 @@ Very simple example using some basic funtionalities:
     S.viz.exposure_plot()
 
 .. image:: http://postimg.org/image/3pl27ud41/
+   :scale: 50%
 
 Miscelaneous
 ------------
