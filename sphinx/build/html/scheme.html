@@ -1,0 +1,476 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Modules scheme &mdash; pyny3d 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="pyny3d 0.1 documentation" href="index.html" />
+    <link rel="next" title="Tutorials" href="tutorial.html" />
+    <link rel="prev" title="pyny3d documentation" href="doc.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>pyny3d 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>Modules scheme</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="doc.html">pyny3d documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="tutorial.html">Tutorials</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#modules-scheme" id="id2">Modules scheme</a><ul>
+<li><a class="reference internal" href="#geoms-module" id="id3"><code class="docutils literal"><span class="pre">geoms</span></code> module</a><ul>
+<li><a class="reference internal" href="#common-methods" id="id4">Common methods</a></li>
+<li><a class="reference internal" href="#polygon" id="id5">Polygon</a></li>
+<li><a class="reference internal" href="#surface" id="id6">Surface</a></li>
+<li><a class="reference internal" href="#polyhedron" id="id7">Polyhedron</a></li>
+<li><a class="reference internal" href="#place" id="id8">Place</a></li>
+<li><a class="reference internal" href="#space" id="id9">Space</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#shadows-module" id="id10"><code class="docutils literal"><span class="pre">shadows</span></code> module</a><ul>
+<li><a class="reference internal" href="#shadowsmanager" id="id11">ShadowsManager</a></li>
+<li><a class="reference internal" href="#viz" id="id12">Viz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="modules-scheme">
+<span id="scheme"></span><h1><a class="toc-backref" href="#id2">Modules scheme</a><a class="headerlink" href="#modules-scheme" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/scheme.png"><img alt="_images/scheme.png" src="_images/scheme.png" style="width: 1096.8999999999999px; height: 231.7px;" /></a>
+<p class="caption"><span class="caption-text"><em>Simple Class Diagram (classes in green)</em></span></p>
+</div>
+<p>As you probably know, there are not public or private methods in Python, it is
+considered that every single line in a Python library is accessible by
+everyone. It is an user decision choosing the most convenient depth of usage of
+a certain package.</p>
+<p>For this reason, I encourage you to use <code class="docutils literal"><span class="pre">pyny3d</span></code> the way you want, from a
+very superficial usage of a couple of functions to a deep editing of a class.
+This library has been made to be as simple as possible for reasons like this.</p>
+<p>But indepently of your implication with the project, it would be a big mistake
+on my part not to advise you the most <em>usable or higher-level</em> functions.</p>
+<p>Take in account that most this functions are used in the examples shown in the
+<a class="reference internal" href="tutorial.html#tutorials"><span>Tutorials</span></a> section, I encourage you to take a closer look there. For the
+current section it will be enough just listing them with a short description.</p>
+<div class="section" id="geoms-module">
+<h2><a class="toc-backref" href="#id3"><code class="docutils literal"><span class="pre">geoms</span></code> module</a><a class="headerlink" href="#geoms-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="common-methods">
+<h3><a class="toc-backref" href="#id4">Common methods</a><a class="headerlink" href="#common-methods" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">method</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>.move()</td>
+<td>Translate the object</td>
+</tr>
+<tr class="row-odd"><td>.zrotate()</td>
+<td>Rotates the object about a z axis</td>
+</tr>
+<tr class="row-even"><td>.mirror()</td>
+<td>Generates a symmetry of the object</td>
+</tr>
+<tr class="row-odd"><td>.matrix()</td>
+<td>Copy the object along a 3D matrix</td>
+</tr>
+<tr class="row-even"><td>.get_domain()</td>
+<td>Returns the domain of an instance</td>
+</tr>
+<tr class="row-odd"><td>.plot()</td>
+<td>Generates a 3D plot</td>
+</tr>
+<tr class="row-even"><td>.save()</td>
+<td>Save the current state of an instance</td>
+</tr>
+<tr class="row-odd"><td>.restore()</td>
+<td>Restores a previous state of an instance</td>
+</tr>
+<tr class="row-even"><td>.copy()</td>
+<td>Copy the current state of an instance</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="polygon">
+<h3><a class="toc-backref" href="#id5">Polygon</a><a class="headerlink" href="#polygon" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">method</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>.get_parametric()</td>
+<td>Returns the parametric equation of the polygon&#8217;s plane</td>
+</tr>
+<tr class="row-odd"><td>.get_path()</td>
+<td>Returns the matplotlib.path.Path of the z=0 projection</td>
+</tr>
+<tr class="row-even"><td>.get_shapely()</td>
+<td>Returns the shapely.Polygon of the z=0 projection</td>
+</tr>
+<tr class="row-odd"><td>.get_area()</td>
+<td>Returns the real area</td>
+</tr>
+<tr class="row-even"><td>.get_height()</td>
+<td>Returns the z value for the parametric equation for
+a list of points</td>
+</tr>
+<tr class="row-odd"><td>.is_convex()</td>
+<td>Returns whether a polygon is convex</td>
+</tr>
+<tr class="row-even"><td>.make_ccw()</td>
+<td>Changes the order of a set of points to be ccw</td>
+</tr>
+<tr class="row-odd"><td>.to_2d()</td>
+<td>Generates the real 2D polygon of the 3D polygon</td>
+</tr>
+<tr class="row-even"><td>.contains()</td>
+<td>Points-in-Polygon algorithm for the z=0 projection</td>
+</tr>
+<tr class="row-odd"><td>.pip()</td>
+<td>Faster Points-in-Polygon algorithm</td>
+</tr>
+<tr class="row-even"><td>.plot2d()</td>
+<td>2D plot of the z=0 projection</td>
+</tr>
+<tr class="row-odd"><td>.lock()</td>
+<td>Precomputes some values to speedup shadowing</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="surface">
+<h3><a class="toc-backref" href="#id6">Surface</a><a class="headerlink" href="#surface" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">method</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>.get_area()</td>
+<td>Returns the real area</td>
+</tr>
+<tr class="row-odd"><td>.get_height()</td>
+<td>Returns the z value for a list of points</td>
+</tr>
+<tr class="row-even"><td>.classify()</td>
+<td>Points-in-Polygon for multiple non-overlapping polygons</td>
+</tr>
+<tr class="row-odd"><td>.interct_with()</td>
+<td>Returns the intersection of multiple polygons</td>
+</tr>
+<tr class="row-even"><td>.contiguous()</td>
+<td>Returns whether a set of polygons are contiguous</td>
+</tr>
+<tr class="row-odd"><td>.melt()</td>
+<td>Merge groups of coplanar and contiguous polygons</td>
+</tr>
+<tr class="row-even"><td>.add_holes()</td>
+<td>Add holes to the Surface</td>
+</tr>
+<tr class="row-odd"><td>.iplot()</td>
+<td>3D plot with polygons/holes color control</td>
+</tr>
+<tr class="row-even"><td>.plot2d()</td>
+<td>2D plot of the z=0 projection</td>
+</tr>
+<tr class="row-odd"><td>.lock()</td>
+<td>Precomputes some values to speedup shadowing</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="polyhedron">
+<h3><a class="toc-backref" href="#id7">Polyhedron</a><a class="headerlink" href="#polyhedron" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">method</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>.get_area()</td>
+<td>Returns the real area</td>
+</tr>
+<tr class="row-odd"><td>.by2polygons()</td>
+<td>Create a polyhedron connecting two polygons</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="place">
+<h3><a class="toc-backref" href="#id8">Place</a><a class="headerlink" href="#place" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="62%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">method</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>.add_set_of_points()</td>
+<td>Add a set of points</td>
+</tr>
+<tr class="row-odd"><td>.clear_set_of_points()</td>
+<td>Remove the points in this place</td>
+</tr>
+<tr class="row-even"><td>.add_extruded_obtacles()</td>
+<td>Add a polyhedra connecting one polyhedron
+with the surface</td>
+</tr>
+<tr class="row-odd"><td>.get_height()</td>
+<td>Returns the z value for a list of points</td>
+</tr>
+<tr class="row-even"><td>.mesh()</td>
+<td>Generates a list of points homogeneously
+distributed</td>
+</tr>
+<tr class="row-odd"><td>.add_holes()</td>
+<td>Add holes to the surface</td>
+</tr>
+<tr class="row-even"><td>.iplot()</td>
+<td>3D plot with color and size control</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="space">
+<h3><a class="toc-backref" href="#id9">Space</a><a class="headerlink" href="#space" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="62%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">method</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>.add_places()</td>
+<td>Add new places to the space</td>
+</tr>
+<tr class="row-odd"><td>.add_space()</td>
+<td>Merge other spaces with this one</td>
+</tr>
+<tr class="row-even"><td>.add_set_of_points()</td>
+<td>Add a set of points</td>
+</tr>
+<tr class="row-odd"><td>.clear_set_of_points()</td>
+<td>Remove the points in this place</td>
+</tr>
+<tr class="row-even"><td>.get_map()</td>
+<td>Returns all the points that forms
+everything declared in the space</td>
+</tr>
+<tr class="row-odd"><td>.map2pyny()</td>
+<td>Creates a Space from a map</td>
+</tr>
+<tr class="row-even"><td>.map2seed()</td>
+<td>Creates a Space from a seed</td>
+</tr>
+<tr class="row-odd"><td>.explode()</td>
+<td>Collect all the polygons, holes and points
+in the space</td>
+</tr>
+<tr class="row-even"><td>.explode_map()</td>
+<td>Faster version of .explode()</td>
+</tr>
+<tr class="row-odd"><td>.get_height()</td>
+<td>Returns the z value for a list of points</td>
+</tr>
+<tr class="row-even"><td>.mesh()</td>
+<td>Generates a list of points homogeneously
+distributed</td>
+</tr>
+<tr class="row-odd"><td>.photo()</td>
+<td>Change of the reference system to align the
+an axis with a given direction</td>
+</tr>
+<tr class="row-even"><td>.iplot()</td>
+<td>3D plot with place, color and size control</td>
+</tr>
+<tr class="row-odd"><td>.shadows()</td>
+<td>Initializes the ShadowingManager</td>
+</tr>
+<tr class="row-even"><td>.lock()</td>
+<td>Precomputes some values to speedup
+shadowing</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="shadows-module">
+<h2><a class="toc-backref" href="#id10"><code class="docutils literal"><span class="pre">shadows</span></code> module</a><a class="headerlink" href="#shadows-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="shadowsmanager">
+<h3><a class="toc-backref" href="#id11">ShadowsManager</a><a class="headerlink" href="#shadowsmanager" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">method</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>.to_minutes()</td>
+<td>Generates absolute minutes time series</td>
+</tr>
+<tr class="row-odd"><td>.get_sunpos()</td>
+<td>Computes the Sun positions for a time series</td>
+</tr>
+<tr class="row-even"><td>.Voronoi_SH()</td>
+<td>Discretizes the Solar Horizont through a Voronoi
+diagram</td>
+</tr>
+<tr class="row-odd"><td>.compute_shadows()</td>
+<td>Computes the shadowing</td>
+</tr>
+<tr class="row-even"><td>.project_data()</td>
+<td>Assign data time series to the places illuminated by
+the Sun</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="viz">
+<h3><a class="toc-backref" href="#id12">Viz</a><a class="headerlink" href="#viz" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">method</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>.vor_plot()</td>
+<td>Generates visualizations about the Voronoi
+discretization</td>
+</tr>
+<tr class="row-odd"><td>.exposure_plot()</td>
+<td>Generates a 3D visualization with the projected data
+from the Sun to the <code class="docutils literal"><span class="pre">pyny.Space</span></code></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="doc.html">pyny3d documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="tutorial.html">Tutorials</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, José Antonio Fernández-Fernández.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

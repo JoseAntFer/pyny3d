@@ -16,7 +16,7 @@ It is built on top of numpy, scipy, matplotlib and shapely. It uses two
 well-known 2D geometry objects (`matplotlib.Path.path` and 
 `shapely.geometry.Polygon`) to safely compute a wide range of planar operations
 at reasonable speed, without the need for the user to worry about the low-level
- workflow.
+workflow.
 
 It has been designed to be a tool for scientific and engineering applications.
 It could hardly be useful in other areas such as computer graphics.

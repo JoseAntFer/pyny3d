@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PiP and Classify tutorial &mdash; pyny3d 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="pyny3d 0.1 documentation" href="index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>pyny3d 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>PiP and Classify tutorial</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <p>Back to <a class="reference internal" href="tutorial.html#tutorials"><span>Tutorials</span></a></p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#pip-and-classify-tutorial" id="id9">PiP and Classify tutorial</a><ul>
+<li><a class="reference internal" href="#pip" id="id10">pip</a></li>
+<li><a class="reference internal" href="#classify" id="id11">classify</a></li>
+<li><a class="reference internal" href="#performance" id="id12">Performance</a><ul>
+<li><a class="reference internal" href="#id1" id="id13">pip</a></li>
+<li><a class="reference internal" href="#id2" id="id14">classify</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="pip-and-classify-tutorial">
+<span id="tutorial-pip-and-classify"></span><h1><a class="toc-backref" href="#id9">PiP and Classify tutorial</a><a class="headerlink" href="#pip-and-classify-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>Both <code class="docutils literal"><span class="pre">.pip()</span></code> and <code class="docutils literal"><span class="pre">.classify()</span></code> use the <a class="reference external" href="http://matplotlib.org/mpl_toolkits/mplot3d/faq.html">Point-in-Polygon</a> algorithm available in
+<em>matplotlib.path.Path.contains_points</em>. The reason why I&#8217;ve created these to
+wraps around the matplotlib&#8217;s algorithm is because, although it is actually
+quite fast, it does not take into account the problem context (obviously).</p>
+<p><em>pyny3d</em> uses (and abuses) this algorithm to compute shadowing, among other
+secondary processes. Usually there are multiple Polygons and <strong>a lot</strong> of
+points in this calculations and if the matplotlib&#8217;s version of this algorithm
+were used without modifications, it would check whether each point is in or out
+each Polygon, this resulting in a very heavy process. What <code class="docutils literal"><span class="pre">.pip()</span></code> and
+<code class="docutils literal"><span class="pre">.classify()</span></code> bring to the table is that they sort the points and the
+Polygons by their positions in the cartesian plane before the calculation
+starts. Knowing the Polygons&#8217; bounding boxes (<code class="docutils literal"><span class="pre">.get_domain()</span></code>) and having the
+points sorted, it is possible to slice the space and isolate a small portion of
+the points with each Polygon.</p>
+<p>We are going to generate a set of points in a mesh and a random set of polygons
+in z=0. To do the second we are going to use the Voronoi discretization
+algorithm available in scipy.spatial:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">Voronoi</span>
+<span class="kn">import</span> <span class="nn">pyny3d.geoms</span> <span class="kn">as</span> <span class="nn">pyny</span>
+<span class="kn">from</span> <span class="nn">pyny3d.utils</span> <span class="kn">import</span> <span class="n">sort_numpy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">plot_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set the x and y limits of a plot from 0 to 1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Points (mesh)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">y1</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c1"># Surface and Polygon</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">centers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">vor</span> <span class="o">=</span> <span class="n">Voronoi</span><span class="p">(</span><span class="n">centers</span><span class="p">)</span>
+<span class="c1">## Looking for finite regions (polygons)</span>
+<span class="n">polygons_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">vor</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span> <span class="k">continue</span>
+    <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="k">continue</span>
+    <span class="n">vert</span> <span class="o">=</span> <span class="n">vor</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">vertices</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">vert</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">vert</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">polygons_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pyny</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span><span class="n">vert</span><span class="p">))</span>
+<span class="c1">## Declaring pyny objects</span>
+<span class="n">surface</span> <span class="o">=</span> <span class="n">pyny</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="n">polygons_list</span><span class="p">)</span>
+<span class="n">polygon</span> <span class="o">=</span> <span class="n">surface</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Viz</span>
+<span class="c1">## Polygon</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">plot2d</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ret</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plot_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="c1">## Surface</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">plot2d</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ret</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plot_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="c1">## Points</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">plot_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/discretization.png"><img alt="_images/discretization.png" src="_images/discretization.png" style="width: 1126.25px; height: 285.67px;" /></a>
+<p class="caption"><span class="caption-text"><em>Note that the Polygons have been generated randomly</em></span></p>
+</div>
+<div class="section" id="pip">
+<h2><a class="toc-backref" href="#id10">pip</a><a class="headerlink" href="#pip" title="Permalink to this headline">¶</a></h2>
+<p>In practical terms, this method is exactly the same as
+<em>matplotlib.path.Path.contains_points</em>. The only that changes is that it is
+necessary to have the points previously sorted. We can specify which is the
+sorted column with the <em>sorted_col</em> argument.</p>
+<p>The matplotlib&#8217;s version for <code class="docutils literal"><span class="pre">polygon</span></code> and <code class="docutils literal"><span class="pre">points</span></code> is as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c1"># PiP</span>
+<span class="c1">## matplotlib&#39;s pip</span>
+<span class="n">polygon_path</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">get_path</span><span class="p">()</span>
+<span class="n">points_in_polygon</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">polygon_path</span><span class="o">.</span><span class="n">contains_points</span><span class="p">(</span><span class="n">points</span><span class="p">)]</span>
+<span class="c1">### Viz</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">plot2d</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">ret</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points_in_polygon</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points_in_polygon</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plot_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="_images/pip_mat.png"><img alt="_images/pip_mat.png" src="_images/pip_mat.png" style="width: 560.0px; height: 417.9px;" /></a>
+<p class="caption"><span class="caption-text"><em>Points in red are inside the polygon while points in cyan are outside</em></span></p>
+</div>
+<p>The pyny3d&#8217;s pip version produce the same output:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c1">## pyny3d&#39;s pip</span>
+<span class="n">points_sorted</span> <span class="o">=</span> <span class="n">sort_numpy</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">order_back</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">polygon</span><span class="o">.</span><span class="n">lock</span><span class="p">()</span>
+<span class="n">points_in_polygon</span> <span class="o">=</span> <span class="n">points_sorted</span><span class="p">[</span><span class="n">polygon</span><span class="o">.</span><span class="n">pip</span><span class="p">(</span><span class="n">points_sorted</span><span class="p">,</span> <span class="n">sorted_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
+<span class="c1">### Viz</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">plot2d</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">ret</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points_in_polygon</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points_in_polygon</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plot_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As we will see later in this section, the big difference here is that we can
+speed up this kind of operations by grouping some steps.</p>
+<p>In this case, it would not be necessary to sort the set of points because
+the numpy&#8217;s <code class="docutils literal"><span class="pre">meshgrid()</span></code> function left the output already sorted by the
+second column (the <em>y</em> value). Due to most of the time the points are generated
+through that function, the default value for <em>sorted_col</em> is 1. In the last
+example it would be equivalent (and faster) just to write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">polygon</span><span class="o">.</span><span class="n">lock</span><span class="p">()</span>
+<span class="n">points_in_polygon</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">polygon</span><span class="o">.</span><span class="n">pip</span><span class="p">(</span><span class="n">points</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="classify">
+<h2><a class="toc-backref" href="#id11">classify</a><a class="headerlink" href="#classify" title="Permalink to this headline">¶</a></h2>
+<p>Calculates the belonging relationship between the polygons
+in the Surface and a set of points. That is, given a set of Polygons, grouped
+in a Surface, and a set of points it computes inside of which polygon is
+each point. As the rest of the similar methods, everything happens in the
+z=0 projection of the objects.</p>
+<p>For a better understanding, I can tell you that <em>pyny3d</em> uses this method to
+generate the <em>Solar Horizont data projections</em> where given a discretization of
+the Sun positions for a year and a data time series with thousands of samples
+with the form of (azimuth, zenit, value) it has to <strong>classify</strong> all the samples
+in the appropriate Polygon:</p>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="_images/vor_count.png"><img alt="_images/vor_count.png" src="_images/vor_count.png" style="width: 720.0px; height: 360.9px;" /></a>
+<p class="caption"><span class="caption-text"><em>In this Surface there are more than 320 polygons and more than 8500 points
+have been classified. The value of each point is 1 so the result of the sum
+for all the points in each polygon is its frequence</em></span></p>
+</div>
+<p>Time now for our little example with the points and Surface defined before:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c1"># Classify</span>
+<span class="n">mapping</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">edge</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">already_sorted</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="c1">## Viz</span>
+<span class="n">points_out</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">mapping</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">mapping_in</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="n">mapping</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">points_in</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">mapping</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">plot2d</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">ret</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points_in</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points_in</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">mapping_in</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;nipy_spectral&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points_out</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points_out</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">plot_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="_images/pyny_classify.png"><img alt="_images/pyny_classify.png" src="_images/pyny_classify.png" style="width: 560.0px; height: 417.9px;" /></a>
+<p class="caption"><span class="caption-text"><em>Points in transparent white are those outside polygons (they have a -1
+value in ``mapping``). Points in color have been classified and represeted
+depending on the polygon they belong</em></span></p>
+</div>
+<p>As you probably have appreciated, there is no need for sort the point in this
+case, it is possible to tell to the method that that <em>already_sorted=False</em>.
+Indeed, <code class="docutils literal"><span class="pre">.classify()</span></code> also locks the Surface for you. So, why I have to
+do it manually in <code class="docutils literal"><span class="pre">.pip()</span></code>?</p>
+<p>The answer is that <code class="docutils literal"><span class="pre">.pip()</span></code> is massively abused in the core of the shadowing
+simulation and adding verifications, locks and sortings would affect
+considerably the performance of the <em>pyny3d&#8217;s shadows</em> module. On the other
+side, although <code class="docutils literal"><span class="pre">.classify()</span></code>, is also used in some important parts of the
+code, adding some automatic verifications for making our life easier is not
+so bad.</p>
+<p>The same as before, we already have the points sorted by the <em>y</em> column so, it
+would be the same (but faster) to write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mapping</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">edge</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">already_sorted</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="performance">
+<h2><a class="toc-backref" href="#id12">Performance</a><a class="headerlink" href="#performance" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3><a class="toc-backref" href="#id13">pip</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>For a single polygon, the difference between matplotlib&#8217;s <code class="docutils literal"><span class="pre">.contains_points()</span></code>
+and pyny3d&#8217;s <code class="docutils literal"><span class="pre">.pip()</span></code> is not so great, but still it exists. The main question
+here is if it is worth to sort the points and to lock the polygon or if it is
+faster just to use <code class="docutils literal"><span class="pre">.contains_points()</span></code> directly. The answer will depend on
+the ability of the problem to be grouped, that is, if your problem has multiple
+polygons and multiple sets of points but those are already sorted it is
+possible that you can speed up the execution because you only have to lock
+the polygons once. however, if you have unpredictable sets of points and
+polygons possibly try to keep everything in order is a waste of time.</p>
+<p>Here we have a comparison between the three posibilities described:</p>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="_images/pip_comparison.png"><img alt="_images/pip_comparison.png" src="_images/pip_comparison.png" style="width: 560.0px; height: 417.9px;" /></a>
+<p class="caption"><span class="caption-text"><em>The pyny3d&#8217;s execution includes sorting the points and locking the polygon
+while the &#8220;already sorted&#8221; version do not include any of those</em></span></p>
+</div>
+<p>To illustrate this, I can tell that whole shading process that perform
+<em>pyny3d</em> decreased its global computing time investement by half when I
+replaced the general matplotlib&#8217;s <code class="docutils literal"><span class="pre">.contains_points()</span></code> to the more
+specialised pyny3d&#8217;s <code class="docutils literal"><span class="pre">.pip()</span></code>.</p>
+</div>
+<div class="section" id="id2">
+<h3><a class="toc-backref" href="#id14">classify</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>If your problem is simple and it has few points I recommend you to use the
+matplotlib&#8217;s algorithm because it is simpler. However, if you have thousands
+of points and polygons you should take a look to the following chart:</p>
+<div class="figure align-center" id="id8">
+<a class="reference internal image-reference" href="_images/global_comparison.png"><img alt="_images/global_comparison.png" src="_images/global_comparison.png" style="width: 633.5px; height: 445.2px;" /></a>
+<p class="caption"><span class="caption-text"><em>Performance comparison: matplotlib&#8217;s ``.contains_points()`` execution time
+(in blue) and pyny3d&#8217;s ``.classify()`` execution time (in red).</em></span></p>
+</div>
+<p>As I commented before, for few points or polygons the execution time is
+very similar but, as we add more elements, the matplotlib&#8217;s version gets much
+slower than the pyny3d&#8217;s version. This is because of the previous sorting of
+the elements: while <code class="docutils literal"><span class="pre">.contains_points()</span></code> is asking each point-polygon
+combination for their relationship, <code class="docutils literal"><span class="pre">.classify()</span></code> only asks the points which
+are known to be inside the local bounding box of the corresponding polygon.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/extreme_comp.png"><img alt="_images/extreme_comp.png" src="_images/extreme_comp.png" style="width: 804.72px; height: 323.12px;" /></a>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember that if you are going to use <em>pyny3d</em> with a lot of
+polygons and you are <strong>completely sure</strong> that the are well defined (like
+this case with <em>scipy.spatial.Voronoi</em>) it is possible that you want to
+remove the ccw forced verification and conversion by setting
+<code class="docutils literal"><span class="pre">pyny.Polygon.verify</span> <span class="pre">=</span> <span class="pre">False</span></code> at the start of your code. This will
+considerably speed up your code.</p>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Next tutorial: <a class="reference internal" href="tutorial_basic_shadowing.html#tutorial-basic-shadowing"><span>Basic shadowing tutorial</span></a></p>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, José Antonio Fernández-Fernández.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

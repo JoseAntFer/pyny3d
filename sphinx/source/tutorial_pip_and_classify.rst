@@ -32,6 +32,16 @@ algorithm available in scipy.spatial::
     from scipy.spatial import Voronoi
     import pyny3d.geoms as pyny
     from pyny3d.utils import sort_numpy
+    import matplotlib.pyplot as plt
+
+    def plot_limits(ax):
+        """
+        Set the x and y limits of a plot from 0 to 1.
+        """
+        ax.set_xlim(left=0, right=1)
+        ax.set_ylim(bottom=0, top=1)
+
+    np.random.seed(seed=3)
 
     # Points (mesh)
     n = 50
@@ -40,7 +50,7 @@ algorithm available in scipy.spatial::
     x1, y1 = np.meshgrid(x1, y1)
     points = np.array([x1.ravel(), y1.ravel()]).T
 
-    # Polygons
+    # Surface and Polygon
     p = 30
     centers = np.random.rand(p, 2)
     vor = Voronoi(centers)
@@ -54,10 +64,20 @@ algorithm available in scipy.spatial::
             polygons_list.append(pyny.Polygon(vert))
     ## Declaring pyny objects
     surface = pyny.Surface(polygons_list)
-    polygon = surface[0]
-    ## Viz
-    polygon.plot2d(alpha=0.5)
-    surface.plot2d(alpha=0.5)
+    polygon = surface[0]  
+      
+    # Viz
+    ## Polygon
+    ax = polygon.plot2d(alpha=0.5, ret=True)
+    plot_limits(ax)
+    ## Surface
+    ax = surface.plot2d(alpha=0.5, ret=True)
+    plot_limits(ax)
+    ## Points
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.scatter(points[:, 0], points[:, 1], c='r', s=15, alpha=0.7)
+    plot_limits(ax)
 
 .. figure:: ../images/tutorials/pip_and_classify/discretization.png
    :scale: 53%
@@ -79,38 +99,40 @@ The matplotlib's version for ``polygon`` and ``points`` is as follows::
     polygon_path = polygon.get_path()
     points_in_polygon = points[polygon_path.contains_points(points)]
     ### Viz
-    ax = polygon.plot2d(alpha=0.5, ret=True)
-    ax.scatter(points_in_polygon[:, 0], points_in_polygon[:, 1], c='r', 
-               s=25, alpha=0.9)
+    ax = polygon.plot2d(alpha=0.3, ret=True)
+    ax.scatter(points_in_polygon[:, 0], points_in_polygon[:, 1], c='r', s=25, alpha=0.9)
     ax.scatter(points[:, 0], points[:, 1], c='c', s=25, alpha=0.3)
-    ax.set_xlim(left=0, right=1)
-    ax.set_ylim(bottom=0, top=1)
+    plot_limits(ax)
 
-.. figure:: ../images/tutorials/pip_and_classify/mat_pip.png
-   :scale: 53%
+.. figure:: ../images/tutorials/pip_and_classify/pip_mat.png
+   :scale: 70%
    :align: center
+   
+   *Points in red are inside the polygon while points in cyan are outside*
     
-The pyny3d's pip version::
+The pyny3d's pip version produce the same output::
 
     ## pyny3d's pip
     points_sorted = sort_numpy(points, col=0, order_back=False)
     polygon.lock()
-    points_in_polygon = points[polygon.pip(points_sorted, sorted_col=0)]   
+    points_in_polygon = points_sorted[polygon.pip(points_sorted, sorted_col=0)]   
     ### Viz
-    ax = polygon.plot2d(alpha=0.5, ret=True)
-    ax.scatter(points_in_polygon[:, 0], points_in_polygon[:, 1], c='r', 
-               s=25, alpha=0.9)
+    ax = polygon.plot2d(alpha=0.3, ret=True)
+    ax.scatter(points_in_polygon[:, 0], points_in_polygon[:, 1], c='r', s=25, alpha=0.9)
     ax.scatter(points[:, 0], points[:, 1], c='c', s=25, alpha=0.3)
-    ax.set_xlim(left=0, right=1)
-    ax.set_ylim(bottom=0, top=1)
+    plot_limits(ax)
 
-.. figure:: ../images/tutorials/pip_and_classify/pyny_pip.png
-   :scale: 53%
-   :align: center
+As we will see later in this section, the big difference here is that we can
+speed up this kind of operations by grouping some steps.
 
-As we can see, the result is exactly the same, but as we will see later in this
-section, the time invested can be an order of magnitude less for the *pyny3d*
-version when the number of points are greater than ten thousand.
+In this case, it would not be necessary to sort the set of points because
+the numpy's ``meshgrid()`` function left the output already sorted by the 
+second column (the *y* value). Due to most of the time the points are generated
+through that function, the default value for *sorted_col* is 1. In the last
+example it would be equivalent (and faster) just to write::
+
+    polygon.lock()
+    points_in_polygon = points[polygon.pip(points)]   
 
 classify
 --------
@@ -127,7 +149,7 @@ with the form of (azimuth, zenit, value) it has to **classify** all the samples
 in the appropriate Polygon:
 
 .. figure:: ../images/auxiliar/vor_count.png
-   :scale: 80%
+   :scale: 30%
    :align: center
 
    *In this Surface there are more than 320 polygons and more than 8500 points
@@ -139,18 +161,21 @@ Time now for our little example with the points and Surface defined before::
     # Classify
     mapping = surface.classify(points, edge=True, col=0, already_sorted=False)
     ## Viz
-    points_out = points[mapping == -1]  # -1 indicates that the point is outside all the polygons
+    points_out = points[mapping == -1]
     mapping_in = mapping[mapping != -1]
     points_in = points[mapping != -1]
     ax = surface.plot2d('c', alpha=0.1, ret=True)
     ax.scatter(points_in[:, 0], points_in[:, 1], c=mapping_in, cmap='nipy_spectral', s=20)
     ax.scatter(points_out[:, 0], points_out[:, 1], c='w', s=20, alpha=0.25)
-    ax.set_xlim(left=0, right=1)
-    ax.set_ylim(bottom=0, top=1)
+    plot_limits(ax)
     
 .. figure:: ../images/tutorials/pip_and_classify/pyny_classify.png
-   :scale: 53%
+   :scale: 70%
    :align: center
+   
+   *Points in transparent white are those outside polygons (they have a -1 
+   value in ``mapping``). Points in color have been classified and represeted
+   depending on the polygon they belong*
 
 As you probably have appreciated, there is no need for sort the point in this
 case, it is possible to tell to the method that that *already_sorted=False*. 
@@ -171,32 +196,66 @@ would be the same (but faster) to write::
     
 Performance
 -----------
-If your problem is simple and has few points I recommend you to use the 
-matplotlib's algorithm because it is simpler. However, if you have thousands
-of points and polygons you should take a look to the following charts:
+pip
+~~~
+For a single polygon, the difference between matplotlib's ``.contains_points()``
+and pyny3d's ``.pip()`` is not so great, but still it exists. The main question
+here is if it is worth to sort the points and to lock the polygon or if it is
+faster just to use ``.contains_points()`` directly. The answer will depend on
+the ability of the problem to be grouped, that is, if your problem has multiple
+polygons and multiple sets of points but those are already sorted it is 
+possible that you can speed up the execution because you only have to lock
+the polygons once. however, if you have unpredictable sets of points and
+polygons possibly try to keep everything in order is a waste of time.
 
-.. figure:: ../images/tutorials/pip_and_classify/performance_pip.png
-   :scale: 53%
+Here we have a comparison between the three posibilities described:
+
+.. figure:: ../images/tutorials/pip_and_classify/pip_comparison.png
+   :scale: 70%
    :align: center
 
-.. figure:: ../images/tutorials/pip_and_classify/performance_classify_1.png
-   :scale: 53%
-   :align: center
-
-
-.. note:: In the case it would be possible not to sort the points because they
-    are already sorted by the *y* value (column number 1). Indeed, this is why
-    the default column to taken as already sorted is this. I have sorted
-    the points by the *x* values (column number 0) for you to see a complete
-    example.
+   *The pyny3d's execution includes sorting the points and locking the polygon
+   while the "already sorted" version do not include any of those*
    
-.. warning:: Remember that if you are going to use *pyny3d* with a lot of 
-    polygons and you are completely sure that the are well defined (like this
-    case with *scipy.spatial.Voronoi*) it is possible that you want to remove
-    the ccw forced verification and conversion by setting 
-    ``pyny.Polygon.verify = False`` at the start of your code.
+To illustrate this, I can tell that whole shading process that perform
+*pyny3d* decreased its global computing time investement by half when I 
+replaced the general matplotlib's ``.contains_points()`` to the more
+specialised pyny3d's ``.pip()``.
+   
+classify
+~~~~~~~~
+If your problem is simple and it has few points I recommend you to use the 
+matplotlib's algorithm because it is simpler. However, if you have thousands
+of points and polygons you should take a look to the following chart:
 
+.. figure:: ../images/tutorials/pip_and_classify/global_comparison.png
+   :scale: 70%
+   :align: center
+   
+   *Performance comparison: matplotlib's ``.contains_points()`` execution time
+   (in blue) and pyny3d's ``.classify()`` execution time (in red).*
 
+As I commented before, for few points or polygons the execution time is 
+very similar but, as we add more elements, the matplotlib's version gets much
+slower than the pyny3d's version. This is because of the previous sorting of 
+the elements: while ``.contains_points()`` is asking each point-polygon 
+combination for their relationship, ``.classify()`` only asks the points which
+are known to be inside the local bounding box of the corresponding polygon.
+
+.. figure:: ../images/tutorials/pip_and_classify/extreme_comp.png
+   :scale: 56%
+   :align: center
+
+.. note:: Remember that if you are going to use *pyny3d* with a lot of 
+    polygons and you are **completely sure** that the are well defined (like 
+    this case with *scipy.spatial.Voronoi*) it is possible that you want to 
+    remove the ccw forced verification and conversion by setting 
+    ``pyny.Polygon.verify = False`` at the start of your code. This will
+    considerably speed up your code.
+
+|
+
+Next tutorial: :ref:`tutorial_basic_shadowing`
 
 
 

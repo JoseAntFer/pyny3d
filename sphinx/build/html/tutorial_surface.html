@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Surface tutorial &mdash; pyny3d 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="pyny3d 0.1 documentation" href="index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>pyny3d 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>Surface tutorial</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <p>Back to <a class="reference internal" href="tutorial.html#tutorials"><span>Tutorials</span></a></p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#surface-tutorial" id="id6">Surface tutorial</a><ul>
+<li><a class="reference internal" href="#non-trivial-methods" id="id7">Non-trivial methods</a><ul>
+<li><a class="reference internal" href="#intersect-with" id="id8">intersect_with</a></li>
+<li><a class="reference internal" href="#contiguous-and-melt" id="id9">contiguous and melt</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="surface-tutorial">
+<span id="tutorial-surface"></span><h1><a class="toc-backref" href="#id6">Surface tutorial</a><a class="headerlink" href="#surface-tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/surface.png"><img alt="_images/surface.png" src="_images/surface.png" style="width: 560.0px; height: 417.9px;" /></a>
+<p class="caption"><span class="caption-text"><em>Example of a Surface formed by four triangles.</em></span></p>
+</div>
+<span class="target" id="module-pyny3d.geoms"></span><dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">pyny3d.geoms.</code><code class="descname">Surface</code><span class="sig-paren">(</span><em>polygons</em>, <em>holes=[]</em>, <em>make_ccw=True</em>, <em>melt=False</em>, <em>check_contiguity=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This class groups contiguous polygons (coplanars or not). These
+polygons cannot overlap each other on the z=0 projection.*</p>
+<p>This object is a composition of polygons and holes. The polygons can
+be used to &#8220;hold up&#8221; other objects (points, other polygons...) and
+to compute shadows. The holes exist only to prevent the program 
+to place objects on them. The shadows computation do not take care
+of the holes**, instead, they can be emulated by a collection of 
+polygons.</p>
+<p>Instances of this class work as iterable object. When indexed, 
+returns the <code class="docutils literal"><span class="pre">pyny.Polygons</span></code> which conform it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polygons</strong> (list of ndarray, list of <code class="docutils literal"><span class="pre">pyny.Polygon</span></code>) &#8211; Polygons to be set as Surface. This is the only
+necessary input to create a Surface.</li>
+<li><strong>holes</strong> (list of ndarray, list of <code class="docutils literal"><span class="pre">pyny.Polygon</span></code>) &#8211; Polygons to be set as holes of the Surface.</li>
+<li><strong>make_ccw</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, points will be sorted ccw for each 
+polygon.</li>
+<li><strong>melt</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the <a class="reference internal" href="doc.html#pyny3d.geoms.Surface.melt" title="pyny3d.geoms.Surface.melt"><code class="xref py py-func docutils literal"><span class="pre">melt()</span></code></a> method will be launched at
+initialization.</li>
+<li><strong>check_contiguity</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, <a class="reference internal" href="doc.html#pyny3d.geoms.Surface.contiguous" title="pyny3d.geoms.Surface.contiguous"><code class="xref py py-func docutils literal"><span class="pre">contiguous()</span></code></a> will be 
+launched at initialization.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">* For models with planes stacked in column, use
+the Place class to distinct them. For example, a three-storey 
+building structure can be modeled by using one <code class="docutils literal"><span class="pre">pyny.Place</span></code> 
+for storey where the floor is a Surface and the columns are 
+Polyhedra.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">** In the future versions of this library it will 
+simulate shadows through the holes.</p>
+</div>
+</dd></dl>
+
+<div class="section" id="non-trivial-methods">
+<h2><a class="toc-backref" href="#id7">Non-trivial methods</a><a class="headerlink" href="#non-trivial-methods" title="Permalink to this headline">¶</a></h2>
+<p>The same that happened with the last tutorial, the non-trivial methods will be
+explained and the trivial ones will be only listed. You can also use the
+<a class="reference internal" href="doc.html#doc-surface"><span>Surface</span></a> documentation.</p>
+<p><strong>Trivial methods:</strong></p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">method</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>.get_area()</td>
+<td>Returns the real area</td>
+</tr>
+<tr class="row-odd"><td>.get_height()</td>
+<td>Returns the z value for a list of points</td>
+</tr>
+<tr class="row-even"><td>.contiguous()</td>
+<td>Returns whether a set of polygons are contiguous</td>
+</tr>
+<tr class="row-odd"><td>.add_holes()</td>
+<td>Add holes to the surface</td>
+</tr>
+<tr class="row-even"><td>.lock()</td>
+<td>Precomputes some values to speedup shadowing</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>The methods to <strong>transform</strong> the classes are explained in detail separately
+in <a class="reference internal" href="tutorial_transformations.html#tutorial-transformations"><span>Transformations</span></a>.</p>
+<p>The <code class="docutils literal"><span class="pre">.classify()</span></code> method is discussed separately in
+<a class="reference internal" href="tutorial_pip_and_classify.html#tutorial-pip-and-classify"><span>PiP and Classify tutorial</span></a>.</p>
+<div class="section" id="intersect-with">
+<h3><a class="toc-backref" href="#id8">intersect_with</a><a class="headerlink" href="#intersect-with" title="Permalink to this headline">¶</a></h3>
+<p>Calculates the intersection between the polygons in a surface
+and an external polygon in the z=0 projection.</p>
+<p>This method fully rely on the <code class="docutils literal"><span class="pre">shapely.Polygon.intersection()</span></code>
+method. The way this method is used is intersecting this polygon
+recursively with all identified polygons which overlaps with it
+in the z=0 projection.</p>
+<p>The only thing that can be confusing is the output. It is a dictionary in
+which, the different intersections are classified with the index number of the
+Surface&#8217;s polygon involved.</p>
+<p>To illustrate with an example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pyny3d.geoms</span> <span class="kn">as</span> <span class="nn">pyny</span>
+
+<span class="c1"># Geometries (all in z=0)</span>
+<span class="n">surface</span> <span class="o">=</span> <span class="n">pyny</span><span class="o">.</span><span class="n">Surface</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]]),</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]]),</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]]),</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]])])</span>
+<span class="n">clip_polygon</span> <span class="o">=</span> <span class="n">pyny</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]))</span>
+
+<span class="c1"># Intersection</span>
+<span class="n">inter_polys</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">intersect_with</span><span class="p">(</span><span class="n">clip_polygon</span><span class="p">)</span>
+
+<span class="c1"># Viz</span>
+<span class="c1">## Creating a surface with the intersection polygons</span>
+<span class="n">inter_surf</span> <span class="o">=</span> <span class="n">pyny</span><span class="o">.</span><span class="n">Surface</span><span class="p">([</span><span class="n">pyny</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">poly</span> <span class="ow">in</span> <span class="n">inter_polys</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+<span class="n">surface</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">clip_polygon</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">inter_surf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/clip.png"><img alt="_images/clip.png" src="_images/clip.png" style="width: 1230.13px; height: 299.45px;" /></a>
+<p class="caption"><span class="caption-text"><em>Four coplanar and contiguous polygons, another polygon to clip with and
+the result of clipping</em></span></p>
+</div>
+</div>
+<div class="section" id="contiguous-and-melt">
+<h3><a class="toc-backref" href="#id9">contiguous and melt</a><a class="headerlink" href="#contiguous-and-melt" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">.contiguous()</span></code> checks whether a set of convex polygons are all contiguous
+and coplanar and <code class="docutils literal"><span class="pre">melt()</span></code> computes the union of these polygons if they give
+<code class="docutils literal"><span class="pre">True</span></code> in the first method. Two polygons are considered contiguous if they
+share, at least, two vertices.</p>
+<p>The verification is not a complete one, it is simplified. For a given set of
+polygons this method will chechk if the number of common vertices among them
+equals or exceeds a certain number of common vertices possible. Anyway, this
+little algorithm will never declare a contiguous set of polygons as
+non-contiguous, but it can fail in the reverse for certain geometries where
+polygons have several common vertices among them.</p>
+<p>The next example is done for the previous set of polygons:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="gp">   ...: </span><span class="kn">import</span> <span class="nn">pyny3d.geoms</span> <span class="kn">as</span> <span class="nn">pyny</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [2]: </span><span class="n">surface</span> <span class="o">=</span> <span class="n">pyny</span><span class="o">.</span><span class="n">Surface</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]]),</span>
+<span class="gp">   ...: </span>                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]]),</span>
+<span class="gp">   ...: </span>                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]]),</span>
+<span class="gp">   ...: </span>                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]])])</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [3]: </span><span class="n">surface</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+
+<span class="gp">In [4]: </span><span class="n">pyny</span><span class="o">.</span><span class="n">Surface</span><span class="o">.</span><span class="n">contiguous</span><span class="p">(</span><span class="n">surface</span><span class="o">.</span><span class="n">polygons</span><span class="p">)</span>  <span class="c1"># static method</span>
+<span class="gh">Out[4]: </span><span class="go">True</span>
+
+<span class="gp">In [5]: </span><span class="n">surface</span><span class="o">.</span><span class="n">melt</span><span class="p">()</span>
+<span class="gp">   ...: </span><span class="n">surface</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="gp">   ...: </span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/melt1.png"><img alt="_images/melt1.png" src="_images/melt1.png" style="width: 759.49px; height: 304.75px;" /></a>
+<p class="caption"><span class="caption-text"><em>Union of four coplanar and contiguous polygons</em></span></p>
+</div>
+<p>On the other hand, if the union is non-convex, although the polygons
+individually are, the method will compute the convex union anyway. This will
+happen when the number of non-coincident vertices are close to cero. In the
+next examples we are going to see how for one vertex we can make the method
+fail but we cannot for two.</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [6]: </span><span class="n">surface</span> <span class="o">=</span> <span class="n">pyny</span><span class="o">.</span><span class="n">Surface</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]]),</span>
+<span class="gp">   ...: </span>                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]]),</span>
+<span class="gp">   ...: </span>                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]]),</span>
+<span class="gp">   ...: </span>                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]])])</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [7]: </span><span class="n">surface</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+
+<span class="gp">In [8]: </span><span class="n">pyny</span><span class="o">.</span><span class="n">Surface</span><span class="o">.</span><span class="n">contiguous</span><span class="p">(</span><span class="n">surface</span><span class="o">.</span><span class="n">polygons</span><span class="p">)</span>
+<span class="gh">Out[8]: </span><span class="go">True</span>
+
+<span class="gp">In [9]: </span><span class="n">surface</span><span class="o">.</span><span class="n">melt</span><span class="p">()</span>
+<span class="gp">   ...: </span><span class="n">surface</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="gp">   ...: </span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="_images/melt2.png"><img alt="_images/melt2.png" src="_images/melt2.png" style="width: 764.7900000000001px; height: 306.87px;" /></a>
+<p class="caption"><span class="caption-text"><em>Error at melting non-convex polygons with one non-coincident vertex</em></span></p>
+</div>
+<p>When the <code class="docutils literal"><span class="pre">.melt()</span></code> method cannot apply any union it lefts the Surface as it
+is:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [10]: </span><span class="n">surface</span> <span class="o">=</span> <span class="n">pyny</span><span class="o">.</span><span class="n">Surface</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]]),</span>
+<span class="gp">   ....: </span>                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]]),</span>
+<span class="gp">   ....: </span>                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]]),</span>
+<span class="gp">   ....: </span>                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">]])])</span>
+<span class="gp">   ....: </span>
+
+<span class="gp">In [11]: </span><span class="n">surface</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+
+<span class="gp">In [12]: </span><span class="n">pyny</span><span class="o">.</span><span class="n">Surface</span><span class="o">.</span><span class="n">contiguous</span><span class="p">(</span><span class="n">surface</span><span class="o">.</span><span class="n">polygons</span><span class="p">)</span>
+<span class="gh">Out[12]: </span><span class="go">False</span>
+
+<span class="gp">In [13]: </span><span class="n">surface</span><span class="o">.</span><span class="n">melt</span><span class="p">()</span>
+<span class="gp">   ....: </span><span class="n">surface</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="gp">   ....: </span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="_images/melt3.png"><img alt="_images/melt3.png" src="_images/melt3.png" style="width: 753.13px; height: 301.57px;" /></a>
+<p class="caption"><span class="caption-text"><em>A Surface with two non-coincident vertices</em></span></p>
+</div>
+<p>Does this mean that <code class="docutils literal"><span class="pre">.melt()</span></code> method is unusable? Absolutely not. If the
+set of polygons are known to have a convex union the problem will not exist.
+And anyway, the method fails in very specific and known cases so you can
+control when and where use it.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Next tutorial: <a class="reference internal" href="tutorial_polyhedron.html#tutorial-polyhedron"><span>Polyhedron tutorial</span></a></p>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, José Antonio Fernández-Fernández.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

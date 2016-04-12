@@ -1,0 +1,3059 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pyny3d documentation &mdash; pyny3d 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="pyny3d 0.1 documentation" href="index.html" />
+    <link rel="next" title="Modules scheme" href="scheme.html" />
+    <link rel="prev" title="README" href="README.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>pyny3d 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>pyny3d documentation</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="README.html">README</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="scheme.html">Modules scheme</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="pyny3d-documentation">
+<h1>pyny3d documentation<a class="headerlink" href="#pyny3d-documentation" title="Permalink to this headline">¶</a></h1>
+<p>In this page, a extended explanation of all the methods in all the classes is
+addressed. Its purpose is be used as sourcebook to figure out how they can be
+used.</p>
+<p>On the other hand, if you prefer a more schematic view of the modules, you
+should visit the <a class="reference internal" href="scheme.html#scheme"><span>Modules scheme</span></a> section. Finally, if you want to see most
+of these funtionalities in action, you probably want to take a look to the
+<a class="reference internal" href="tutorial.html#tutorials"><span>Tutorials</span></a> section.</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#module-pyny3d.geoms" id="id8"><code class="docutils literal"><span class="pre">geoms</span></code> module</a><ul>
+<li><a class="reference internal" href="#polygon" id="id9">Polygon</a></li>
+<li><a class="reference internal" href="#surface" id="id10">Surface</a></li>
+<li><a class="reference internal" href="#polyhedron" id="id11">Polyhedron</a></li>
+<li><a class="reference internal" href="#place" id="id12">Place</a></li>
+<li><a class="reference internal" href="#space" id="id13">Space</a></li>
+<li><a class="reference internal" href="#root" id="id14">*root</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyny3d.shadows" id="id15"><code class="docutils literal"><span class="pre">shadows</span></code> module</a><ul>
+<li><a class="reference internal" href="#shadowsmanager" id="id16">ShadowsManager</a></li>
+<li><a class="reference internal" href="#viz" id="id17">Viz</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyny3d.utils" id="id18"><code class="docutils literal"><span class="pre">utils</span></code> auxiliar module</a></li>
+</ul>
+</div>
+<div class="section" id="module-pyny3d.geoms">
+<span id="geoms-module"></span><h2><a class="toc-backref" href="#id8"><code class="docutils literal"><span class="pre">geoms</span></code> module</a><a class="headerlink" href="#module-pyny3d.geoms" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="polygon">
+<span id="doc-polygon"></span><h3><a class="toc-backref" href="#id9">Polygon</a><a class="headerlink" href="#polygon" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/polygon.png"><img alt="_images/polygon.png" src="_images/polygon.png" style="width: 560.0px; height: 417.9px;" /></a>
+<p class="caption"><span class="caption-text"><em>Example of a triangle given by three points:
+[[0, 0, 0], [5, 0, 0], [2.5, 2.5, 2]]</em></span></p>
+</div>
+<dl class="class">
+<dt id="pyny3d.geoms.Polygon">
+<em class="property">class </em><code class="descclassname">pyny3d.geoms.</code><code class="descname">Polygon</code><span class="sig-paren">(</span><em>points</em>, <em>make_ccw=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic geometry object. It generates and stores all the information
+relative to a polygon in 3D.</p>
+<p>Instances of this class work as iterable object. When indexed, 
+returns the points which conform it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points</strong> (ndarray <em>shape=(N, 2 or 3)</em>) &#8211; np.array with the sorted points which form the 
+polygon (xyz or xy). Do not repeat the first point at the end.</li>
+<li><strong>make_ccw</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, points will be sorted ccw.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This object can be locked (<code class="docutils literal"><span class="pre">.lock()</span></code> method) in order to 
+precompute the domain and the path for faster further 
+computations.</p>
+</div>
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.contains">
+<code class="descname">contains</code><span class="sig-paren">(</span><em>points</em>, <em>edge=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.contains"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Point-in-Polygon for the z=0 projection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points</strong> (<em>ndarray with points (xyz or xy) in rows</em>) &#8211; Set of points to evaluate.</li>
+<li><strong>edge</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, consider the points in the Polygon&#8217;s edge
+inside the Polygon.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Whether each point is inside the polygon or not (in
+z=0 projection).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray (dtype=bool)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.get_area">
+<code class="descname">get_area</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.get_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.get_area" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The area of the polygon.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.get_domain">
+<code class="descname">get_domain</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.get_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.get_domain" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">opposite vertices of the bounding prism for this 
+object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">ndarray([min], [max])</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.get_height">
+<code class="descname">get_height</code><span class="sig-paren">(</span><em>points</em>, <em>only_in=True</em>, <em>edge=True</em>, <em>full=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.get_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.get_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a set of points, computes the z value for the parametric
+equation of the plane where the polygon belongs.</p>
+<p>Only the two first columns of the points will be taken into 
+account as x and y.</p>
+<p>The points outside the object will have a NaN value in the
+z column. If the inputed points has a third column the z values
+outside the Surface&#8217;s domain will remain unchanged, the rest
+will be replaced.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points</strong> (<em>ndarray shape=(N, 2 or 3)</em>) &#8211; list of coordinates of the points to calculate.</li>
+<li><strong>only_in</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; returns only the points which are inside of the
+Polygon.</li>
+<li><strong>edge</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, consider the points in the Polygon&#8217;s edge
+inside the Polygon.</li>
+<li><strong>full</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If true, the return will have three columns 
+(x, y, z) instead of one (z).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><ol class="loweralpha simple" start="26">
+<li>or (x, y, z)</li>
+</ol>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray shape=(N, 1 or 3)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.get_parametric">
+<code class="descname">get_parametric</code><span class="sig-paren">(</span><em>check=True</em>, <em>tolerance=0.001</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.get_parametric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.get_parametric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the parametric equation of the plane that contains 
+the polygon. The output has the form np.array([a, b, c, d]) 
+for:</p>
+<div class="math">
+\[a*x + b*y + c*z + d = 0\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>check</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Checks whether the points are actually
+in the same plane with certain <em>tolerance</em>.</li>
+<li><strong>tolerance</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Tolerance to check whether the points belong
+to the same plane.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method automatically stores the solution in order
+to do not repeat calculations if the user needs to call it 
+more than once.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.get_path">
+<code class="descname">get_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.get_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.get_path" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">matplotlib.path.Path object for the z=0 projection of 
+this polygon.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.get_plotable3d">
+<code class="descname">get_plotable3d</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.get_plotable3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.get_plotable3d" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">matplotlib Poly3DCollection</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">mpl_toolkits.mplot3d</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.get_seed">
+<code class="descname">get_seed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.get_seed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.get_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect the required information to generate a data estructure 
+that can be used to recreate exactly the same Geometry object
+via <em>**kwargs</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Object&#8217;s sufficient info to initialize it.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.get_shapely">
+<code class="descname">get_shapely</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.get_shapely"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.get_shapely" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">shapely.Polygon object of the z=0 projection of 
+this polygon.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method automatically stores the solution in order
+to do not repeat calculations if the user needs to call it 
+more than once.</p>
+</div>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyny3d.geoms.Polygon.is_convex">
+<em class="property">static </em><code class="descname">is_convex</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.is_convex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.is_convex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static method. Returns True if the polygon is convex regardless 
+of whether its vertices follow a clockwise or a 
+counter-clockwise order. This is a requirement for the rest of 
+the program.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> (<em>ndarray with points (xyz or xy) in rows</em>) &#8211; Polygons color.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Whether a polygon is convex or not.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Despite the code works for ccw polygons, in order to 
+avoid possible bugs it is always recommended to use ccw 
+rather than cw.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.lock">
+<code class="descname">lock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Precomputes some parameters to run faster specific methods like
+Surface.classify.</p>
+<p>Stores <code class="docutils literal"><span class="pre">self.domain</span></code> and <code class="docutils literal"><span class="pre">self.path</span></code>, both very used in
+the shadows simulation, in order to avoid unnecesssary
+calculations.</p>
+<p>Once locked, it is possible to retrieve the domain and the path
+of a polygon by <code class="docutils literal"><span class="pre">self.domain</span></code> and <code class="docutils literal"><span class="pre">self.path</span></code> instead 
+launching <code class="docutils literal"><span class="pre">self.get_path()</span></code> and <code class="docutils literal"><span class="pre">self.get_domain()</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyny3d.geoms.Polygon.make_ccw">
+<em class="property">static </em><code class="descname">make_ccw</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.make_ccw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.make_ccw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static method. Returns a counterclock wise ordered sequence of 
+points based on its z=0 projection. If there are any repeated
+point the method will raise an error.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> (<em>ndarray with points (xyz or xy) in rows</em>) &#8211; Points to form a polygon (xyz or xy)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">ccw version of the points.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray (shape=(N, 2 or 3))</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.matrix">
+<code class="descname">matrix</code><span class="sig-paren">(</span><em>x=(0</em>, <em>0)</em>, <em>y=(0</em>, <em>0)</em>, <em>z=(0</em>, <em>0)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the <code class="docutils literal"><span class="pre">pyny.Polygon</span></code> itself along a 3D matrix given by the 
+three tuples x, y, z:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>tuple (len=2)</em>) &#8211; Number of copies and distance between them in this
+direction.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of <code class="docutils literal"><span class="pre">pyny.Polygons</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.mirror">
+<code class="descname">mirror</code><span class="sig-paren">(</span><em>axes='x'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.mirror"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a symmetry of the Polygon respect global axes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axes</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; &#8216;x&#8217;, &#8216;y&#8217;, &#8216;z&#8217;, &#8216;xy&#8217;, &#8216;xz&#8217;, &#8216;yz&#8217;...</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Polygon</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>d_xyz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate the Polygons in x, y and z coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>d_xyz</strong> (<em>tuple (len=2 or 3)</em>) &#8211; displacement in x, y(, and z).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Polygon</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.pip">
+<code class="descname">pip</code><span class="sig-paren">(</span><em>points</em>, <em>sorted_col=0</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.pip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.pip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Point-in-Polygon for the z=0 projection. This function enhances
+the performance of <code class="docutils literal"><span class="pre">Polygon.contains()</span></code> by verifying only the 
+points which are inside the bounding box of the polygon. To do 
+it fast, it needs the points array to be already sorted by one
+column.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points</strong> (<em>ndarray (shape=(N, 2 or 3))</em>) &#8211; list of <em>(x, y, z) or (x, y)</em> coordinates of the
+points to check. (The z value will not be taken into 
+account).</li>
+<li><strong>sorted_col</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Index of the sorted column (0 or 1).</li>
+<li><strong>radius</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Enlarge Polygons domain by a specified quantity.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Which points are inside the polygon.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray (dtpye=bool)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">By default pip considers that the set of points is
+currently sorted by the first column.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method only works if the polygon has been 
+locked (<a class="reference internal" href="#pyny3d.geoms.Polygon.lock" title="pyny3d.geoms.Polygon.lock"><code class="xref py py-func docutils literal"><span class="pre">lock()</span></code></a>).</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.plot2d">
+<code class="descname">plot2d</code><span class="sig-paren">(</span><em>color='default'</em>, <em>alpha=1</em>, <em>ret=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.plot2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.plot2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a 2D plot for the z=0 Polygon projection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>color</strong> (<em>matplotlib color</em>) &#8211; Polygon color.</li>
+<li><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Opacity.</li>
+<li><strong>ret</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, returns the figure. It can be used to add 
+more elements to the plot or to modify it.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None, axes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None, matplotlib axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.seed2pyny">
+<code class="descname">seed2pyny</code><span class="sig-paren">(</span><em>seed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.seed2pyny"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.seed2pyny" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-initialize an object with a seed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal"><span class="pre">pyny.Polygon</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Polygon</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.to_2d">
+<code class="descname">to_2d</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.to_2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.to_2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the real 2D polygon of the 3D polygon.</p>
+<p>This library mostly uses the z=0 projection to perform 
+operations with the polygons. For this reason, if real 2D
+planar operations are required (draw a real matplotlib.path, 
+calculate real area...) the best way is to create a new 
+<code class="docutils literal"><span class="pre">pyny.Polygon</span></code> with this method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Planar orthogonal view of the polygon.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Polygon</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polygon.zrotate">
+<code class="descname">zrotate</code><span class="sig-paren">(</span><em>angle</em>, <em>axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polygon.zrotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polygon.zrotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new Polygon which is the same but rotated about a 
+vertical axis.</p>
+<p>If the axis given is <code class="docutils literal"><span class="pre">None</span></code>, the rotation will be computed
+about the Surface&#8217;s centroid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Rotation angle (in radians)</li>
+<li><strong>axis</strong> (<em>tuple (len=2 or 3) or None</em>) &#8211; Point in z=0 to perform as rotation axis</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">pyny.Polygon</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="surface">
+<span id="doc-surface"></span><h3><a class="toc-backref" href="#id10">Surface</a><a class="headerlink" href="#surface" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/surface.png"><img alt="_images/surface.png" src="_images/surface.png" style="width: 560.0px; height: 417.9px;" /></a>
+<p class="caption"><span class="caption-text"><em>Example of a Surface formed by four triangles.</em></span></p>
+</div>
+<dl class="class">
+<dt id="pyny3d.geoms.Surface">
+<em class="property">class </em><code class="descclassname">pyny3d.geoms.</code><code class="descname">Surface</code><span class="sig-paren">(</span><em>polygons</em>, <em>holes=[]</em>, <em>make_ccw=True</em>, <em>melt=False</em>, <em>check_contiguity=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class groups contiguous polygons (coplanars or not). These
+polygons cannot overlap each other on the z=0 projection.*</p>
+<p>This object is a composition of polygons and holes. The polygons can
+be used to &#8220;hold up&#8221; other objects (points, other polygons...) and
+to compute shadows. The holes exist only to prevent the program 
+to place objects on them. The shadows computation do not take care
+of the holes**, instead, they can be emulated by a collection of 
+polygons.</p>
+<p>Instances of this class work as iterable object. When indexed, 
+returns the <code class="docutils literal"><span class="pre">pyny.Polygons</span></code> which conform it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polygons</strong> (list of ndarray, list of <code class="docutils literal"><span class="pre">pyny.Polygon</span></code>) &#8211; Polygons to be set as Surface. This is the only
+necessary input to create a Surface.</li>
+<li><strong>holes</strong> (list of ndarray, list of <code class="docutils literal"><span class="pre">pyny.Polygon</span></code>) &#8211; Polygons to be set as holes of the Surface.</li>
+<li><strong>make_ccw</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, points will be sorted ccw for each 
+polygon.</li>
+<li><strong>melt</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the <a class="reference internal" href="#pyny3d.geoms.Surface.melt" title="pyny3d.geoms.Surface.melt"><code class="xref py py-func docutils literal"><span class="pre">melt()</span></code></a> method will be launched at
+initialization.</li>
+<li><strong>check_contiguity</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, <a class="reference internal" href="#pyny3d.geoms.Surface.contiguous" title="pyny3d.geoms.Surface.contiguous"><code class="xref py py-func docutils literal"><span class="pre">contiguous()</span></code></a> will be 
+launched at initialization.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">* For models with planes stacked in column, use
+the Place class to distinct them. For example, a three-storey 
+building structure can be modeled by using one <code class="docutils literal"><span class="pre">pyny.Place</span></code> 
+for storey where the floor is a Surface and the columns are 
+Polyhedra.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">** In the future versions of this library it will 
+simulate shadows through the holes.</p>
+</div>
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.add_holes">
+<code class="descname">add_holes</code><span class="sig-paren">(</span><em>holes_list</em>, <em>make_ccw=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.add_holes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.add_holes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add holes to the holes list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>holes_list</strong> (<em>list or pyny.Polygon</em>) &#8211; Polygons that will be treated as holes.</li>
+<li><strong>make_ccw</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, points will be sorted ccw.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The holes can be anywhere, not necesarily on the 
+surface.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.classify">
+<code class="descname">classify</code><span class="sig-paren">(</span><em>points</em>, <em>edge=True</em>, <em>col=1</em>, <em>already_sorted=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.classify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.classify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the belonging relationship between the polygons
+in the Surface and a set of points.</p>
+<p>This function enhances the performance of <code class="docutils literal"><span class="pre">Polygon.contains()</span></code>
+by verifying only the points which are inside the z=0 bounding
+box of the polygon. To do it fast, it sorts the points and then
+apply <code class="docutils literal"><span class="pre">Polygon.pip()</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points</strong> (<em>ndarray (shape=(N, 2 or 3))</em>) &#8211; list of (x, y, z) or (x, y) coordinates of the
+points to check. (The z value will not be taken into 
+account).</li>
+<li><strong>edge</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, consider the points in the Polygon&#8217;s edge
+inside the Polygon.</li>
+<li><strong>col</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Column to sort or already sorted.</li>
+<li><strong>already_sorted</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the method will consider that
+the <code class="docutils literal"><span class="pre">points</span></code> are already sorted by the column <code class="docutils literal"><span class="pre">col</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Index of the Polygon to which each point belongs. 
+-1 if outside the Surface.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray (dtpye=int)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is supposed that the Polygons do not overlap 
+each other.</p>
+</div>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyny3d.geoms.Surface.contiguous">
+<em class="property">static </em><code class="descname">contiguous</code><span class="sig-paren">(</span><em>polygons</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.contiguous"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.contiguous" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a set of convex polygons are all contiguous. Two 
+polygons are considered contiguous if they share, at least, two
+vertices.</p>
+<p>This is not a complete verification, it is a very simplified
+one. For a given set of polygons this method will verify that 
+the number of common vertices among them equals or exceeds the
+minimum number of common vertices possible.</p>
+<p>This little algorithm will not declare a contiguous set of 
+polygons as non-contiguous, but it can fail in the reverse for 
+certain geometries where polygons have several common vertices
+among them.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polygons</strong> (list of <code class="docutils literal"><span class="pre">pyny.Polygon</span></code>) &#8211; List of polygons.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Whether tey are contiguous.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.get_area">
+<code class="descname">get_area</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.get_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.get_area" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The area of the surface.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The area is computed as the sum of the areas of all
+the polygons minus the sum of the areas of all the holes.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.get_domain">
+<code class="descname">get_domain</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.get_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.get_domain" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">opposite vertices of the bounding prism for this 
+object in the form of ndarray([min], [max])</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method automatically stores the solution in order
+to do not repeat calculations if the user needs to call it 
+more than once.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.get_height">
+<code class="descname">get_height</code><span class="sig-paren">(</span><em>points</em>, <em>edge=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.get_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.get_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a set of points, computes the z value for the parametric
+equation of the Polygons in the Surface.</p>
+<p>This method computes recursively the <code class="docutils literal"><span class="pre">Polygon.get_height()</span></code>
+method for all the Polygons in the Surface, obtaining the z 
+value for the points according to the local Polygon they belong.</p>
+<p>The points outside the object will have a NaN value in the
+z column. If the inputed points has a third column the z values
+outside the Surface&#8217;s domain will remain unchanged, the rest
+will be replaced.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points</strong> (<em>ndarray (shape=(N, 2 or 3))</em>) &#8211; list of coordinates of the points to calculate.</li>
+<li><strong>edge</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, consider the points in the Polygon&#8217;s edge
+inside the Polygon.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(x, y, z) arrays</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray (shape=(N, 3))</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.get_plotable3d">
+<code class="descname">get_plotable3d</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.get_plotable3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.get_plotable3d" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">matplotlib Poly3DCollection</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of mpl_toolkits.mplot3d</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.get_seed">
+<code class="descname">get_seed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.get_seed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.get_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect the required information to generate a data estructure 
+that can be used to recreate exactly the same geometry object
+via <em>**kwargs</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Object&#8217;s sufficient info to initialize it.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.intersect_with">
+<code class="descname">intersect_with</code><span class="sig-paren">(</span><em>polygon</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.intersect_with"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.intersect_with" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the intersection between the polygons in this surface
+and other polygon in the z=0 projection.</p>
+<p>This method rely fully on the <code class="docutils literal"><span class="pre">shapely.Polygon.intersect_with()</span></code>
+method. The way this method is used is intersecting this polygon
+recursively with all identified polygons which overlaps with it
+in the z=0 projection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polygon</strong> (<em>pyny.Polygon</em>) &#8211; Polygon to intersect with the Surface.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Multiple polygons product of the intersections.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict of ndarrays (keys are the number of the polygon
+inside the surface)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.iplot">
+<code class="descname">iplot</code><span class="sig-paren">(</span><em>c_poly='default'</em>, <em>c_holes='c'</em>, <em>ret=False</em>, <em>ax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.iplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.iplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Improved plot that allows to plot polygons and holes in
+different colors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>c_poly</strong> (<em>matplotlib color, &#8216;default&#8217; or &#8216;t&#8217; (transparent)</em>) &#8211; Polygons color.</li>
+<li><strong>c_holes</strong> (<em>matplotlib color, &#8216;default&#8217; or &#8216;t&#8217; (transparent)</em>) &#8211; Holes color.</li>
+<li><strong>ret</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, returns the figure. It can be used to add 
+more elements to the plot or to modify it.</li>
+<li><strong>ax</strong> (<em>mplot3d.Axes3D, None</em>) &#8211; If a matplotlib axes given, this method will 
+represent the plot on top of this axes. This is used to
+represent multiple plots from multiple geometries, 
+overlapping them recursively.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None, axes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None, mplot3d.Axes3D</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.lock">
+<code class="descname">lock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Precomputes some parameters to run faster specific methods like
+Surface.classify.</p>
+<p>Lock the Polygons and generates an index of the sorted areas.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.matrix">
+<code class="descname">matrix</code><span class="sig-paren">(</span><em>x=(0</em>, <em>0)</em>, <em>y=(0</em>, <em>0)</em>, <em>z=(0</em>, <em>0)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the <code class="docutils literal"><span class="pre">pyny.Surface</span></code> itself along a 3D matrix given by the 
+three tuples x, y, z:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>tuple (len=2)</em>) &#8211; Number of copies and distance between them in this
+direction.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of <code class="docutils literal"><span class="pre">pyny.Surface</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.melt">
+<code class="descname">melt</code><span class="sig-paren">(</span><em>plot=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.melt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.melt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find and merge groups of polygons in the surface that meet the 
+following criteria:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Are coplanars.</li>
+<li>Are contiguous.</li>
+<li>The result is convex.</li>
+</ul>
+</div></blockquote>
+<p>This method is very useful reducing the number the items and
+therefore, the shadowing time computing. Before override this
+instance, it is saved and can be restored with <code class="docutils literal"><span class="pre">.restore()</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, generates the before and after 
+visualizations for the surface. Use it to check the results.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method do not check if the merged polygons are 
+actually convex. The convex hull of the union is directly 
+calculated. For this reason, it is very important to visualy
+check the solution.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Some information from the previous state of the 
+surface will be removed.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.mirror">
+<code class="descname">mirror</code><span class="sig-paren">(</span><em>axes='x'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.mirror"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a symmetry of the Surface respect global axes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axes</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; &#8216;x&#8217;, &#8216;y&#8217;, &#8216;z&#8217;, &#8216;xy&#8217;, &#8216;xz&#8217;, &#8216;yz&#8217;...</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Surface</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>d_xyz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate the Surface in x, y and z coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>d_xyz</strong> (<em>tuple (len=2 or 3)</em>) &#8211; displacement in x, y(, and z).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Surface</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.plot2d">
+<code class="descname">plot2d</code><span class="sig-paren">(</span><em>c_poly='default'</em>, <em>alpha=1</em>, <em>cmap='default'</em>, <em>ret=False</em>, <em>title=' '</em>, <em>colorbar=False</em>, <em>cbar_label=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.plot2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.plot2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a 2D plot for the z=0 Surface projection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>c_poly</strong> (<em>matplotlib color</em>) &#8211; Polygons color.</li>
+<li><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Opacity.</li>
+<li><strong>cmap</strong> (<em>matplotlib.cm</em>) &#8211; colormap</li>
+<li><strong>ret</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, returns the figure. It can be used to add 
+more elements to the plot or to modify it.</li>
+<li><strong>title</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Figure title.</li>
+<li><strong>colorbar</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, inserts a colorbar in the figure.</li>
+<li><strong>cbar_label</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Colorbar right label.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None, axes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None, matplotlib axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.seed2pyny">
+<code class="descname">seed2pyny</code><span class="sig-paren">(</span><em>seed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.seed2pyny"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.seed2pyny" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-initialize an object with a seed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal"><span class="pre">pyny.Surface</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Surface</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Surface.zrotate">
+<code class="descname">zrotate</code><span class="sig-paren">(</span><em>angle</em>, <em>axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Surface.zrotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Surface.zrotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new Surface which is the same but rotated about a 
+vertical axis.</p>
+<p>If the axis given is <code class="docutils literal"><span class="pre">None</span></code>, the rotation will be computed
+about the Surface&#8217;s centroid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Rotation angle (in radians)</li>
+<li><strong>axis</strong> (<em>tuple (len=2 or 3) or None</em>) &#8211; Point in z=0 to perform as rotation axis</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">pyny.Surface</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="polyhedron">
+<span id="doc-polyhedron"></span><h3><a class="toc-backref" href="#id11">Polyhedron</a><a class="headerlink" href="#polyhedron" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/polyhedron.png"><img alt="_images/polyhedron.png" src="_images/polyhedron.png" style="width: 560.0px; height: 417.9px;" /></a>
+<p class="caption"><span class="caption-text"><em>Example of a Polyhedron created extruding a polygon along the z axis from
+the ground to the Surface</em></span></p>
+</div>
+<dl class="class">
+<dt id="pyny3d.geoms.Polyhedron">
+<em class="property">class </em><code class="descclassname">pyny3d.geoms.</code><code class="descname">Polyhedron</code><span class="sig-paren">(</span><em>polygons</em>, <em>make_ccw=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polyhedron"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polyhedron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents 3D polygon-based convex polyhedra.</p>
+<p>Under the hood, <code class="docutils literal"><span class="pre">pyny.Polyhedron</span></code> class uses the <code class="docutils literal"><span class="pre">pyny.Surface</span></code>
+infrastructure to store and operate with the faces (Polygons). This
+<code class="docutils literal"><span class="pre">pyny.Surface</span></code> can be found in <code class="docutils literal"><span class="pre">Polyhedron.aux_surface</span></code>.</p>
+<p>Instances of this class work as iterable object. When indexed, 
+returns the <code class="docutils literal"><span class="pre">pyny.Polygons</span></code> which conform it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polygons</strong> (list of ndarray, list of <code class="docutils literal"><span class="pre">pyny.Polygon</span></code>) &#8211; Polygons to be set as the Polyhedron. These 
+Polygons have to be contiguous and form a closed polyhedron*.</li>
+<li><strong>make_ccw</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, points will be sorted ccw for each 
+polygon.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">* A concave or open polyhedron will not produce any 
+errors and the code will probably work fine but it is important 
+to keep in mind that <code class="docutils literal"><span class="pre">pyny3d</span></code> was created to work specifically
+with convex and closed bodies. Future versions of <code class="docutils literal"><span class="pre">pyny3d</span></code> 
+will incorporate functionalities that will raise an error for 
+concave or open Polyhedras.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This object do NOT check the contiguity of the 
+polygons or whether the polyhedron is closed or not, even it is
+actually a requirement.</p>
+</div>
+<dl class="staticmethod">
+<dt id="pyny3d.geoms.Polyhedron.by_two_polygons">
+<em class="property">static </em><code class="descname">by_two_polygons</code><span class="sig-paren">(</span><em>poly1</em>, <em>poly2</em>, <em>make_ccw=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polyhedron.by_two_polygons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polyhedron.by_two_polygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static method. Creates a closed <code class="docutils literal"><span class="pre">pyny.Polyhedron</span></code> connecting 
+two polygons. Both polygons must have the same number of 
+vertices.</p>
+<p>The rest of its faces will be generated by matching the 
+polygons&#8217; vertices two by two.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>poly1</strong> (<code class="docutils literal"><span class="pre">pyny.Polygon</span></code> or ndarray (shape=(N, 3))) &#8211; Origin polygon</li>
+<li><strong>poly2</strong> (<code class="docutils literal"><span class="pre">pyny.Polygon</span></code> or ndarray (shape=(N, 3))) &#8211; Destination polygon</li>
+<li><strong>make_ccw</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, points will be sorted ccw for each 
+polygon.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Polyhedron</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">pypy.Polyhedron</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If an error is raised, probably the Polyhedron
+have non-planar faces.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If the Polyhedra are not created with this method
+or <code class="docutils literal"><span class="pre">Place.add_extruded_obstacles()</span></code>, holes will not be 
+added.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polyhedron.get_area">
+<code class="descname">get_area</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polyhedron.get_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polyhedron.get_area" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The area of the polyhedron.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polyhedron.get_domain">
+<code class="descname">get_domain</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polyhedron.get_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polyhedron.get_domain" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">opposite vertices of the bounding prism for this 
+object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">ndarray([min], [max])</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method automatically stores the solution in order
+to do not repeat calculations if the user needs to call it 
+more than once.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polyhedron.get_plotable3d">
+<code class="descname">get_plotable3d</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polyhedron.get_plotable3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polyhedron.get_plotable3d" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">matplotlib Poly3DCollection</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of mpl_toolkits.mplot3d</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polyhedron.get_seed">
+<code class="descname">get_seed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polyhedron.get_seed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polyhedron.get_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect the required information to generate a data estructure 
+that can be used to recreate exactly the same geometry object
+via <em>**kwargs</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Object&#8217;s sufficient info to initialize it.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polyhedron.matrix">
+<code class="descname">matrix</code><span class="sig-paren">(</span><em>x=(0</em>, <em>0)</em>, <em>y=(0</em>, <em>0)</em>, <em>z=(0</em>, <em>0)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polyhedron.matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polyhedron.matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the <code class="docutils literal"><span class="pre">pyny.Polyhedron</span></code> itself along a 3D matrix given by the 
+three tuples x, y, z:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>tuple (len=2)</em>) &#8211; Number of copies and distance between them in this
+direction.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of <code class="docutils literal"><span class="pre">pyny.Polyhedron</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polyhedron.mirror">
+<code class="descname">mirror</code><span class="sig-paren">(</span><em>axes='x'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polyhedron.mirror"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polyhedron.mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a symmetry of the Polyhedron respect global axes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axes</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; &#8216;x&#8217;, &#8216;y&#8217;, &#8216;z&#8217;, &#8216;xy&#8217;, &#8216;xz&#8217;, &#8216;yz&#8217;...</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Polyhedron</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polyhedron.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>d_xyz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polyhedron.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polyhedron.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate the Polyhedron in x, y and z coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>d_xyz</strong> (<em>tuple (len=2 or 3)</em>) &#8211; displacement in x, y(, and z).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Polyhedron</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polyhedron.seed2pyny">
+<code class="descname">seed2pyny</code><span class="sig-paren">(</span><em>seed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polyhedron.seed2pyny"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polyhedron.seed2pyny" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-initialize an object with a seed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal"><span class="pre">pyny.Polyhedron</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Polyhedron</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Polyhedron.zrotate">
+<code class="descname">zrotate</code><span class="sig-paren">(</span><em>angle</em>, <em>axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Polyhedron.zrotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Polyhedron.zrotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new Polyhedron which is the same but rotated about a 
+vertical axis.</p>
+<p>If the axis given is <code class="docutils literal"><span class="pre">None</span></code>, the rotation will be computed
+about the Polyhedron&#8217;s centroid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Rotation angle (in radians)</li>
+<li><strong>axis</strong> (<em>tuple (len=2 or 3) or None</em>) &#8211; Point in z=0 to perform as rotation axis</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">pyny.Polyhedron</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="place">
+<span id="doc-place"></span><h3><a class="toc-backref" href="#id12">Place</a><a class="headerlink" href="#place" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="_images/place.png"><img alt="_images/place.png" src="_images/place.png" style="width: 560.0px; height: 417.9px;" /></a>
+<p class="caption"><span class="caption-text"><em>Example of a Place with the three objects it can manage: a Surface, a unlimited
+number of Polyhedra and a Set of points.</em></span></p>
+</div>
+<dl class="class">
+<dt id="pyny3d.geoms.Place">
+<em class="property">class </em><code class="descclassname">pyny3d.geoms.</code><code class="descname">Place</code><span class="sig-paren">(</span><em>surface</em>, <em>polyhedra=[]</em>, <em>set_of_points=array([]</em>, <em>shape=(0</em>, <em>3)</em>, <em>dtype=float64)</em>, <em>make_ccw=True</em>, <em>melt=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place" title="Permalink to this definition">¶</a></dt>
+<dd><p>Agregates one <code class="docutils literal"><span class="pre">pyny.Surface</span></code>, one Set of points and an indefinite
+number of <code class="docutils literal"><span class="pre">pyny.Polyhedra</span></code>.</p>
+<p>Represents the union of a surface with an unlimited number of 
+obstacles. All the elements that conform a Place keep their 
+integrity and functionality, what the Place class makes is to give
+the possibility to perform higher level operations in these groups
+of objects.</p>
+<p>Instances of this class cannot work as iterable object and cannot be
+indexed.</p>
+<dl class="docutils">
+<dt>The lower level instances will be stored in:</dt>
+<dd><ul class="first last simple">
+<li><strong>Place.surface</strong></li>
+<li><strong>Place.polyhedra</strong></li>
+<li><strong>Place.set_of_points</strong></li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>surface</strong> (<code class="docutils literal"><span class="pre">pyny.Surface</span></code>, list of <code class="docutils literal"><span class="pre">pyny.Polygon</span></code> or list
+of ndarray) &#8211; This is the only necessary input to create a 
+<code class="docutils literal"><span class="pre">pyny.Place</span></code>.</li>
+<li><strong>polyhedra</strong> (list of <code class="docutils literal"><span class="pre">pyny.Polyhedra</span></code>) &#8211; <code class="docutils literal"><span class="pre">pyny.Polyhedra</span></code> to attach to the 
+<code class="docutils literal"><span class="pre">pyny.Place</span></code>.</li>
+<li><strong>set_of_points</strong> (<em>ndarray (shape=(N, 3))</em>) &#8211; Points to attach to the <code class="docutils literal"><span class="pre">pyny.Place</span></code>.</li>
+<li><strong>make_ccw</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, points will be sorted ccw for each 
+polygon.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This object is implemented to be used dynamically. Once
+created, it is possible to add elements, with 
+<code class="docutils literal"><span class="pre">.add_set_of_points</span></code>, <code class="docutils literal"><span class="pre">.add_extruded_obstacles</span></code> among others,
+without replace it.</p>
+</div>
+<dl class="method">
+<dt id="pyny3d.geoms.Place.add_extruded_obstacles">
+<code class="descname">add_extruded_obstacles</code><span class="sig-paren">(</span><em>top_polys</em>, <em>make_ccw=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.add_extruded_obstacles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.add_extruded_obstacles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add polyhedras to the Place by giving their top polygon and
+applying extrusion along the z axis.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>top_polys</strong> (list of <code class="docutils literal"><span class="pre">pyny.Polygon</span></code>) &#8211; Polygons to be extruded downwards to the 
+Surface.</li>
+<li><strong>make_ccw</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, points will be sorted ccw.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When a top polygon is projected downwards and it
+instersects multiple Surface&#8217;s polygons, a independent
+polyhedron will be created for each individual 
+intersection*.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The top polygons have to be over the Surface, that
+is, their z=0 projection have to be inside of Surface&#8217;s z=0 
+projection.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If the Polyhedra are not created with this method
+or <code class="docutils literal"><span class="pre">Polyhedron.by_two_polygons()</span></code>, holes will not be 
+added.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.add_holes">
+<code class="descname">add_holes</code><span class="sig-paren">(</span><em>holes_list</em>, <em>make_ccw=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.add_holes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.add_holes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add holes to the Place&#8217;s <code class="docutils literal"><span class="pre">pyny.Surface</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>holes_list</strong> (list or <code class="docutils literal"><span class="pre">pyny.Polygon</span></code>) &#8211; Polygons that will be treated as holes.</li>
+<li><strong>make_ccw</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, points will be sorted ccw.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The holes can be anywhere, not necesarily on the 
+surface.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.add_set_of_points">
+<code class="descname">add_set_of_points</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.add_set_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.add_set_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new set of points to the existing one without removing it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> (<em>ndarray (shape=(N, 3))</em>) &#8211; Points to be added.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.clear_set_of_points">
+<code class="descname">clear_set_of_points</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.clear_set_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.clear_set_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all the points in the Place.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.get_domain">
+<code class="descname">get_domain</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.get_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.get_domain" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">opposite vertices of the bounding prism for this 
+object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">ndarray([min], [max])</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.get_height">
+<code class="descname">get_height</code><span class="sig-paren">(</span><em>points</em>, <em>edge=True</em>, <em>attach=False</em>, <em>extra_height=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.get_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.get_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launch <code class="docutils literal"><span class="pre">pyny.Surface.get_height(points)</span></code> for the Place&#8217;s 
+Surface.</p>
+<p>This method gives the possibility to store the computed points
+along with the Place&#8217;s set of points. It also make possible to
+add an extra height (z value) to these points.</p>
+<p>The points outside the object will have a NaN value in the
+z column. These point will not be stored but it will be
+returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points</strong> (<em>ndarray (shape=(N, 2 or 3))</em>) &#8211; list of coordinates of the points to calculate.</li>
+<li><strong>edge</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, consider the points in the Polygon&#8217;s edge
+inside the Polygon.</li>
+<li><strong>attach</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, stores the computed points along with
+the Place&#8217;s set of points.</li>
+<li><strong>extra_height</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Adds an extra height (z value) to the
+resulting points.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(x, y, z)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.get_plotable3d">
+<code class="descname">get_plotable3d</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.get_plotable3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.get_plotable3d" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">matplotlib Poly3DCollection</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of mpl_toolkits.mplot3d</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.get_seed">
+<code class="descname">get_seed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.get_seed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.get_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect the required information to generate a data estructure 
+that can be used to recreate exactly the same geometry object
+via <em>**kwargs</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Object&#8217;s sufficient info to initialize it.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.iplot">
+<code class="descname">iplot</code><span class="sig-paren">(</span><em>c_poly='default'</em>, <em>c_holes='default'</em>, <em>c_sop='r'</em>, <em>s_sop=25</em>, <em>extra_height=0.2</em>, <em>ret=False</em>, <em>ax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.iplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.iplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Improved plot that allows to plot polygons and holes in
+different colors and to change the size and the color of the
+set of points.</p>
+<p>The points can be plotted accordingly to a ndarray colormap.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>c_poly</strong> (<em>matplotlib color, &#8216;default&#8217; or &#8216;t&#8217; (transparent)</em>) &#8211; Polygons color.</li>
+<li><strong>c_holes</strong> (<em>matplotlib color, &#8216;default&#8217; or &#8216;t&#8217; (transparent)</em>) &#8211; Holes color.</li>
+<li><strong>c_sop</strong> (<em>matplotlib color or colormap</em>) &#8211; Set of points color.</li>
+<li><strong>s_sop</strong> (<em>float or ndarray</em>) &#8211; Set of points size.</li>
+<li><strong>extra_height</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Elevates the points in the visualization.</li>
+<li><strong>ret</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, returns the figure. It can be used to add 
+more elements to the plot or to modify it.</li>
+<li><strong>ax</strong> (<em>mplot3d.Axes3D, None</em>) &#8211; If a matplotlib axes given, this method will 
+represent the plot on top of this axes. This is used to
+represent multiple plots from multiple geometries, 
+overlapping them recursively.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None, axes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None, mplot3d.Axes3D</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.matrix">
+<code class="descname">matrix</code><span class="sig-paren">(</span><em>x=(0</em>, <em>0)</em>, <em>y=(0</em>, <em>0)</em>, <em>z=(0</em>, <em>0)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the <code class="docutils literal"><span class="pre">pyny.Place</span></code> itself along a 3D matrix given by the 
+three tuples x, y, z:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>tuple (len=2)</em>) &#8211; Number of copies and distance between them in this
+direction.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of <code class="docutils literal"><span class="pre">pyny.Place</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.mesh">
+<code class="descname">mesh</code><span class="sig-paren">(</span><em>mesh_size=1</em>, <em>extra_height=0.1</em>, <em>edge=True</em>, <em>attach=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.mesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a set of points in a mesh that covers the whole Place
+and computes their height.</p>
+<p>Generates a xy mesh with a given mesh_size in the 
+Place.surface&#8217;s domain and computes the Surface&#8217;s height for the
+nodes. This mesh is alligned with the main directions <cite>x</cite> and 
+<cite>y</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mesh_size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; distance between points.</li>
+<li><strong>extra_height</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Adds an extra height (z value) to the
+resulting points.</li>
+<li><strong>edge</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, consider the points in the Polygon&#8217;s edge
+inside the Polygon.</li>
+<li><strong>attach</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, stores the computed points along with
+the Place&#8217;s set of points.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(x, y, z)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.mirror">
+<code class="descname">mirror</code><span class="sig-paren">(</span><em>axes='x'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.mirror"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a symmetry of the Place respect global axes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axes</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; &#8216;x&#8217;, &#8216;y&#8217;, &#8216;z&#8217;, &#8216;xy&#8217;, &#8216;xz&#8217;, &#8216;yz&#8217;...</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Place</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>d_xyz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate the Place in x, y and z coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>d_xyz</strong> (<em>tuple (len=2 or 3)</em>) &#8211; displacement in x, y(, and z).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Place</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.seed2pyny">
+<code class="descname">seed2pyny</code><span class="sig-paren">(</span><em>seed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.seed2pyny"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.seed2pyny" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-initialize an object with a seed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal"><span class="pre">pyny.Place</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Place</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Place.zrotate">
+<code class="descname">zrotate</code><span class="sig-paren">(</span><em>angle</em>, <em>axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Place.zrotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Place.zrotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new Place which is the same but rotated about a 
+vertical axis.</p>
+<p>If the axis given is <code class="docutils literal"><span class="pre">None</span></code>, the rotation will be computed
+about the Place&#8217;s centroid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Rotation angle (in radians)</li>
+<li><strong>axis</strong> (<em>tuple (len=2 or 3) or None</em>) &#8211; Point in z=0 to perform as rotation axis</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">pyny.Place</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="space">
+<span id="doc-space"></span><h3><a class="toc-backref" href="#id13">Space</a><a class="headerlink" href="#space" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="_images/space.png"><img alt="_images/space.png" src="_images/space.png" style="width: 560.0px; height: 417.9px;" /></a>
+<p class="caption"><span class="caption-text"><em>Example of a Space with six individual Places.</em></span></p>
+</div>
+<dl class="class">
+<dt id="pyny3d.geoms.Space">
+<em class="property">class </em><code class="descclassname">pyny3d.geoms.</code><code class="descname">Space</code><span class="sig-paren">(</span><em>places=[]</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space" title="Permalink to this definition">¶</a></dt>
+<dd><p>Highest geometry class. Aggregate <code class="docutils literal"><span class="pre">pyny.Places</span></code> to compute 
+operations simultaneously on a group of them. It can be initialized
+empty.</p>
+<dl class="docutils">
+<dt>The lower level instances will be stored in:</dt>
+<dd><ul class="first last simple">
+<li><strong>Space.places</strong></li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>places</strong> (list of <code class="docutils literal"><span class="pre">pyny.Place</span></code>) &#8211; Places or empty list.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+<p>Most of the funtionalities of this library are implemented only for
+<code class="docutils literal"><span class="pre">pyny.Space</span></code> instances, such as compute shadows. Some of most 
+handy are: <a class="reference internal" href="#pyny3d.geoms.Space.move" title="pyny3d.geoms.Space.move"><code class="xref py py-func docutils literal"><span class="pre">move()</span></code></a>, <a class="reference internal" href="#pyny3d.geoms.Space.zrotate" title="pyny3d.geoms.Space.zrotate"><code class="xref py py-func docutils literal"><span class="pre">zrotate()</span></code></a>, <a class="reference internal" href="#pyny3d.geoms.Space.matrix" title="pyny3d.geoms.Space.matrix"><code class="xref py py-func docutils literal"><span class="pre">matrix()</span></code></a> or 
+<a class="reference internal" href="#pyny3d.geoms.Space.mirror" title="pyny3d.geoms.Space.mirror"><code class="xref py py-func docutils literal"><span class="pre">mirror()</span></code></a>.</p>
+<p>Instances of this class work as iterable object. When indexed, 
+returns the <code class="docutils literal"><span class="pre">pyny.Places</span></code> which conform it.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This class is implemented to be used dynamically. Once
+created, it is possible to add elements, with 
+<code class="docutils literal"><span class="pre">.add_places</span></code>, <code class="docutils literal"><span class="pre">.add_spaces</span></code> among others, without replace 
+it.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Although it is a dynamic class, it is recommended to 
+use the methods to manipulate it. Editing the internal 
+attributes or methods directly can result in a bad behavior.</p>
+</div>
+<dl class="method">
+<dt id="pyny3d.geoms.Space.add_places">
+<code class="descname">add_places</code><span class="sig-paren">(</span><em>places</em>, <em>ret=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.add_places"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.add_places" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add pyny.Places to the current space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>places</strong> (<em>list of pyny.Place</em>) &#8211; Places to add.</li>
+<li><strong>ret</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, returns the whole updated Space.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None, <code class="docutils literal"><span class="pre">pyny.Space</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method acts inplace.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.add_spaces">
+<code class="descname">add_spaces</code><span class="sig-paren">(</span><em>spaces</em>, <em>ret=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.add_spaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.add_spaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add pyny.Spaces to the current space. In other words, it merges
+multiple pyny.Spaces in this instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>places</strong> (<em>list of pyny.Spaces</em>) &#8211; <code class="docutils literal"><span class="pre">pyny.Spaces</span></code> to add.</li>
+<li><strong>ret</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, returns the whole updated Space.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None, <code class="docutils literal"><span class="pre">pyny.Space</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method acts inplace.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.clear_sets_of_points">
+<code class="descname">clear_sets_of_points</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.clear_sets_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.clear_sets_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears all the sets of points of each <code class="docutils literal"><span class="pre">pyny.Place</span></code> in the 
+Space.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.explode">
+<code class="descname">explode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.explode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.explode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect all the polygons, holes and points in the Space packaged
+in a list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The polygons, the holes and the points.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.explode_map">
+<code class="descname">explode_map</code><span class="sig-paren">(</span><em>map_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.explode_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.explode_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Much faster version of <code class="docutils literal"><span class="pre">pyny.Space.explode()</span></code> method for 
+previously locked <code class="docutils literal"><span class="pre">pyny.Space</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>map</strong> (<em>ndarray (shape=(N, 3))</em>) &#8211; the points, and the same order, that appear at 
+<code class="docutils literal"><span class="pre">pyny.Space.get_map()</span></code>. There is no need for the index if 
+locked.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The polygons, the holes and the points.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.get_domain">
+<code class="descname">get_domain</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.get_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.get_domain" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">opposite vertices of the bounding prism for this 
+object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">ndarray([min], [max])</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.get_height">
+<code class="descname">get_height</code><span class="sig-paren">(</span><em>points</em>, <em>edge=True</em>, <em>attach=False</em>, <em>extra_height=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.get_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.get_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launch <code class="docutils literal"><span class="pre">pyny.Place.get_height(points)</span></code> recursively for all 
+the <code class="docutils literal"><span class="pre">pyny.Place</span></code> individually.</p>
+<p>The points outside the object will have a NaN value in the
+z column. These point will not be stored but it will be
+returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points</strong> (<em>ndarray (shape=(N, 2 or 3))</em>) &#8211; list of coordinates of the points to calculate.</li>
+<li><strong>edge</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, consider the points in the Polygon&#8217;s edge
+inside the Polygon.</li>
+<li><strong>attach</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, stores the computed points along with
+the Place&#8217;s set of points.</li>
+<li><strong>extra_height</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Adds an extra height (z value) to the
+resulting points.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(x, y, z)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.get_map">
+<code class="descname">get_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.get_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.get_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect all the points coordinates from this <code class="docutils literal"><span class="pre">pyny.Space</span></code>
+instance.</p>
+<p>In order to keep the reference, it returns an index with the
+following key:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">The first column is the Place.</p>
+</li>
+<li><dl class="first docutils">
+<dt>The second column is the body (-1: points, 0: surface, </dt>
+<dd><p class="first last">n: polyhedron)</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">The third column is the polygon (-n: holes)</p>
+</li>
+<li><p class="first">The fourth column is the point.</p>
+</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">[index, points]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of ndarray</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method automatically stores the solution in order
+to do not repeat calculations if the user needs to call it 
+more than once.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.get_plotable3d">
+<code class="descname">get_plotable3d</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.get_plotable3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.get_plotable3d" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">matplotlib Poly3DCollection</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of mpl_toolkits.mplot3d</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.get_polygons">
+<code class="descname">get_polygons</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.get_polygons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.get_polygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect all polygons for the Places in the Space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The polygons which form the whole <code class="docutils literal"><span class="pre">pyny.Space</span></code>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <code class="docutils literal"><span class="pre">pyny.Polygon</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.get_seed">
+<code class="descname">get_seed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.get_seed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.get_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect the required information to generate a data estructure 
+that can be used to recreate exactly the same geometry object
+via <em>**kwargs</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Object&#8217;s sufficient info to initialize it.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.get_sets_index">
+<code class="descname">get_sets_index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.get_sets_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.get_sets_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a one dimension array with the Place where the points 
+belong.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The <code class="docutils literal"><span class="pre">pyny.Place</span></code> where the points belong.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.get_sets_of_points">
+<code class="descname">get_sets_of_points</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.get_sets_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.get_sets_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect all the sets of points for the Places in the Space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array with the points of all <code class="docutils literal"><span class="pre">pyny.Places</span></code> which 
+form this <code class="docutils literal"><span class="pre">pyny.Space</span></code>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">ndarray (shape=(N, 3))</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.iplot">
+<code class="descname">iplot</code><span class="sig-paren">(</span><em>places=-1</em>, <em>c_poly='default'</em>, <em>c_holes='default'</em>, <em>c_sop='r'</em>, <em>s_sop=25</em>, <em>ret=False</em>, <em>ax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.iplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.iplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Improved plot that allows to plot polygons and holes in
+different colors and to change the size and the color of the
+set of points.</p>
+<p>The points can be plotted accordingly to a ndarray colormap.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>c_poly</strong> (<em>matplotlib color, &#8216;default&#8217; or &#8216;t&#8217; (transparent)</em>) &#8211; Polygons color.</li>
+<li><strong>c_holes</strong> (<em>matplotlib color, &#8216;default&#8217; or &#8216;t&#8217; (transparent)</em>) &#8211; Holes color.</li>
+<li><strong>c_sop</strong> (<em>matplotlib color or colormap</em>) &#8211; Set of points color.</li>
+<li><strong>s_sop</strong> (<em>float or ndarray</em>) &#8211; Set of points size.</li>
+<li><strong>ret</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, returns the figure. It can be used to add 
+more elements to the plot or to modify it.</li>
+<li><strong>ax</strong> (<em>mplot3d.Axes3D, None</em>) &#8211; If a matplotlib axes given, this method will 
+represent the plot on top of this axes. This is used to
+represent multiple plots from multiple geometries, 
+overlapping them recursively.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None, axes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None, mplot3d.Axes3D</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.lock">
+<code class="descname">lock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lock the Space. Precomputes the map, the seed and some necessary 
+schedules. Speeds up the code significantly by boing most of
+the big loops just once.</p>
+<p>This method is automatically launched before shadows
+computation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.map2pyny">
+<code class="descname">map2pyny</code><span class="sig-paren">(</span><em>map_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.map2pyny"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.map2pyny" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an altered version of this <code class="docutils literal"><span class="pre">pyny.Space</span></code> using an 
+altered map.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>map</strong> (<em>ndarray (shape=(N, 3))</em>) &#8211; the points, and the same order, that appear at 
+<code class="docutils literal"><span class="pre">pyny.Space.get_map()</span></code>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Space</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.map2seed">
+<code class="descname">map2seed</code><span class="sig-paren">(</span><em>map_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.map2seed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.map2seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an altered seed from an altered map to produce a 
+transformed <code class="docutils literal"><span class="pre">pyny.Space</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>map</strong> (<em>ndarray (shape=(N, 3))</em>) &#8211; the points, and the same order, that appear at 
+<code class="docutils literal"><span class="pre">pyny.Space.get_map()</span></code>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Space</span></code> seed.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.matrix">
+<code class="descname">matrix</code><span class="sig-paren">(</span><em>x=(0</em>, <em>0)</em>, <em>y=(0</em>, <em>0)</em>, <em>z=(0</em>, <em>0)</em>, <em>inplace=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the <code class="docutils literal"><span class="pre">pyny.Space</span></code> itself along a 3D matrix given by the 
+three tuples x, y, z:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>tuple (len=2)</em>) &#8211; Number of copies and distance between them in this
+direction.</li>
+<li><strong>inplace</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the moved <code class="docutils literal"><span class="pre">pyny.Space</span></code> is copied and 
+added to the current <code class="docutils literal"><span class="pre">pyny.Space</span></code>. If False, it returns 
+the new <code class="docutils literal"><span class="pre">pyny.Space</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None, <code class="docutils literal"><span class="pre">pyny.Space</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.mesh">
+<code class="descname">mesh</code><span class="sig-paren">(</span><em>mesh_size=1</em>, <em>extra_height=0.1</em>, <em>edge=True</em>, <em>attach=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.mesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launch <cite>pyny.Place.mesh(points)</cite> recursively for all 
+the <code class="docutils literal"><span class="pre">pyny.Place</span></code> individually.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mesh_size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; distance between points.</li>
+<li><strong>extra_height</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Adds an extra height (z value) to the
+resulting points.</li>
+<li><strong>edge</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, consider the points in the Polygon&#8217;s edge
+inside the Polygon.</li>
+<li><strong>attach</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, stores the computed points along with
+the Place&#8217;s set of points.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(x, y, z)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.mirror">
+<code class="descname">mirror</code><span class="sig-paren">(</span><em>axes='x'</em>, <em>inplace=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.mirror"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a symmetry of the Space respect global axes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>axes</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; &#8216;x&#8217;, &#8216;y&#8217;, &#8216;z&#8217;, &#8216;xy&#8217;, &#8216;xz&#8217;, &#8216;yz&#8217;...</li>
+<li><strong>inplace</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the new <code class="docutils literal"><span class="pre">pyny.Space</span></code> is copied and 
+added to the current <code class="docutils literal"><span class="pre">pyny.Space</span></code>. If False, it returns 
+the new <code class="docutils literal"><span class="pre">pyny.Space</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None, <code class="docutils literal"><span class="pre">pyny.Space</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>d_xyz</em>, <em>inplace=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate the whole Space in x, y and z coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>d_xyz</strong> (<em>tuple (len=2 or 3)</em>) &#8211; displacement in x, y(, and z).</li>
+<li><strong>inplace</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the moved <code class="docutils literal"><span class="pre">pyny.Space</span></code> is copied and 
+added to the current <code class="docutils literal"><span class="pre">pyny.Space</span></code>. If False, it returns 
+the new <code class="docutils literal"><span class="pre">pyny.Space</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None, <code class="docutils literal"><span class="pre">pyny.Space</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.photo">
+<code class="descname">photo</code><span class="sig-paren">(</span><em>azimuth_zenit</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.photo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.photo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a change of the reference system for the whole 
+<code class="docutils literal"><span class="pre">pyny.Space</span></code> to align the <cite>y</cite> axis with a given direction. 
+Returns its elements (polygons, holes, points) extracted in a
+list.</p>
+<p>In its conception, this method was created as a tool for the 
+shadows computation by calculating &#8220;what is in front and what 
+is behind to the look of the Sun&#8221;. For this reason, the 
+direction is given in spherical coordinates by two angles: the 
+azimth and the zenit.</p>
+<blockquote>
+<div><ul class="simple">
+<li>The azimuth is zero when pointing to the South, -pi/4 to 
+the East, pi/4 to the West and pi/2 to the North.</li>
+<li>The zenit is zero at the ground level and pi/4 &#8220;pointing
+completely orthogonal to the sky&#8221;.</li>
+</ul>
+</div></blockquote>
+<p>In short, this methods answer &#8220;How would the <code class="docutils literal"><span class="pre">pyny.Space</span></code> look
+in a photograph taken from an arbitrary direction in cylindrical 
+perpective?&#8221;</p>
+<p>The photograph has a new reference system: x, y, depth. The sign
+of the new depth coordinate has to be checked before assuming 
+what is closer and what is further inasmuch as it changes
+depending on the direction of the photo.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>azimuth_zenit</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Direction of the photo in spherical 
+coordinates and in radians.</li>
+<li><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, is shows the photo visualization.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Exploded <code class="docutils literal"><span class="pre">pyny.Space</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)">list</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.seed2pyny">
+<code class="descname">seed2pyny</code><span class="sig-paren">(</span><em>seed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.seed2pyny"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.seed2pyny" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-initialize an object with a seed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal"><span class="pre">pyny.Space</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">pyny.Space</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.shadows">
+<code class="descname">shadows</code><span class="sig-paren">(</span><em>data=None</em>, <em>t=None</em>, <em>dt=None</em>, <em>latitude=None</em>, <em>init='empty'</em>, <em>resolution='mid'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.shadows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.shadows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a ShadowManager object for this <code class="docutils literal"><span class="pre">pyny.Space</span></code> 
+instance.</p>
+<p>The &#8216;empty&#8217; initialization accepts <code class="docutils literal"><span class="pre">data</span></code> and <code class="docutils literal"><span class="pre">t</span></code> and <code class="docutils literal"><span class="pre">dt</span></code>
+but the ShadowsManager will not start the calculations. It will
+wait the user to manually insert the rest of the parameters.
+Call <code class="docutils literal"><span class="pre">ShadowsManager.run()</span></code> to start the shadowing 
+computations.</p>
+<p>The &#8216;auto&#8217; initialization pre-sets all the minimum parameters to
+run the computations*. The available resolutions are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8216;low&#8217;</li>
+<li>&#8216;mid&#8217;</li>
+<li>&#8216;high&#8217;</li>
+</ul>
+</div></blockquote>
+<p>The &#8216;auto&#8217; mode will use all the arguments different than 
+<code class="docutils literal"><span class="pre">None</span></code> and the <code class="docutils literal"><span class="pre">set_of_points</span></code> of the <code class="docutils literal"><span class="pre">pyny.Space</span></code> if any.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>ndarray (shape=N), None</em>) &#8211; Data timeseries to project on the 3D model 
+(radiation, for example).</li>
+<li><strong>t</strong> (<em>ndarray or list, None</em>) &#8211; Time vector in absolute minutes or datetime objects</li>
+<li><strong>dt</strong> (<em>int, None</em>) &#8211; Interval time to generate t vector.</li>
+<li><strong>latitude</strong> (<em>float (radians)</em>) &#8211; Local latitude.</li>
+<li><strong>init</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Initialization mode</li>
+<li><strong>init</strong> &#8211; Resolution for the time vector generation (if 
+<code class="docutils literal"><span class="pre">None</span></code>), for setting the sensible points and for the 
+Voronoi diagram.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">ShadowsManager</span></code> object</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">* The latitude is set in 0.65 rads (37º) by 
+default.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.Space.zrotate">
+<code class="descname">zrotate</code><span class="sig-paren">(</span><em>angle</em>, <em>axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#Space.zrotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.Space.zrotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new Space which is the same but rotated about a 
+vertical axis.</p>
+<p>If the axis given is <code class="docutils literal"><span class="pre">None</span></code>, the rotation will be computed
+about the Space&#8217;s centroid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Rotation angle (in radians)</li>
+<li><strong>axis</strong> (<em>tuple (len=2 or 3) or None</em>) &#8211; Point in z=0 to perform as rotation axis</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">pyny.Space</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="root">
+<h3><a class="toc-backref" href="#id14">*root</a><a class="headerlink" href="#root" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pyny3d.geoms.root">
+<em class="property">class </em><code class="descclassname">pyny3d.geoms.</code><code class="descname">root</code><a class="reference internal" href="_modules/pyny3d/geoms.html#root"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lowest geometry class in hierarchy. Actually do nothig but store
+two general methods for the real classes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#pyny3d.geoms.root.plot" title="pyny3d.geoms.root.plot"><code class="xref py py-func docutils literal"><span class="pre">plot()</span></code></a></li>
+<li><a class="reference internal" href="#pyny3d.geoms.root.get_centroid" title="pyny3d.geoms.root.get_centroid"><code class="xref py py-func docutils literal"><span class="pre">get_centroid()</span></code></a></li>
+<li><a class="reference internal" href="#pyny3d.geoms.root.copy" title="pyny3d.geoms.root.copy"><code class="xref py py-func docutils literal"><span class="pre">copy()</span></code></a></li>
+<li><a class="reference internal" href="#pyny3d.geoms.root.save" title="pyny3d.geoms.root.save"><code class="xref py py-func docutils literal"><span class="pre">save()</span></code></a></li>
+<li><a class="reference internal" href="#pyny3d.geoms.root.restore" title="pyny3d.geoms.root.restore"><code class="xref py py-func docutils literal"><span class="pre">restore()</span></code></a></li>
+</ul>
+</div></blockquote>
+<p>Other Global methods (but individually defined in each class) are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>get_seed</li>
+<li>seed2pyny</li>
+<li>get_domain</li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="pyny3d.geoms.root.center_plot">
+<code class="descname">center_plot</code><span class="sig-paren">(</span><em>ax</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#root.center_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.root.center_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Centers and keep the aspect ratio in a 3D representation.</p>
+<p>Created to help higher classes to manage cascade representation
+of multiple lower objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ax</strong> (<em>mplot3d.Axes3D</em>) &#8211; Axes to apply the method.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.root.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#root.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.root.copy" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A deepcopy the entire instance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.root.get_centroid">
+<code class="descname">get_centroid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#root.get_centroid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.root.get_centroid" title="Permalink to this definition">¶</a></dt>
+<dd><p>The centroid is considered the center point of the circunscribed
+paralellepiped, not the mass center.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(x, y, z) coordinates of the centroid of the object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.root.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>color='default'</em>, <em>ret=False</em>, <em>ax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#root.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.root.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a 3D visualization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>color</strong> (<em>matplotlib color, &#8216;default&#8217; or &#8216;t&#8217; (transparent)</em>) &#8211; Polygons color.</li>
+<li><strong>ret</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, returns the figure. It can be used to add 
+more elements to the plot or to modify it.</li>
+<li><strong>ax</strong> (<em>mplot3d.Axes3D, None</em>) &#8211; This plot will be represented 
+on top. This is used to represent multiple plots from 
+multiple geometries, overlapping them recursively.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None, axes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">mplot3d.Axes3D, bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.root.restore">
+<code class="descname">restore</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#root.restore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.root.restore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a previous saved state of the current object. <code class="docutils literal"><span class="pre">.save()</span></code>
+method can be used any time to save the current state of an 
+object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Restored version of this object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.geoms.root.save">
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/geoms.html#root.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.geoms.root.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves a deepcopy of the current state the instance. 
+<code class="docutils literal"><span class="pre">.restore()</span></code> method will return this copy.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</div>
+</div>
+<div class="section" id="module-pyny3d.shadows">
+<span id="shadows-module"></span><h2><a class="toc-backref" href="#id15"><code class="docutils literal"><span class="pre">shadows</span></code> module</a><a class="headerlink" href="#module-pyny3d.shadows" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="shadowsmanager">
+<span id="doc-shadowsmanager"></span><h3><a class="toc-backref" href="#id16">ShadowsManager</a><a class="headerlink" href="#shadowsmanager" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="_images/ShadowsManager.png"><img alt="_images/ShadowsManager.png" src="_images/ShadowsManager.png" style="width: 589.4px; height: 415.09999999999997px;" /></a>
+<p class="caption"><span class="caption-text"><em>Example of a shadowing computation for a four-storey simple structure.</em></span></p>
+</div>
+<dl class="class">
+<dt id="pyny3d.shadows.ShadowsManager">
+<em class="property">class </em><code class="descclassname">pyny3d.shadows.</code><code class="descname">ShadowsManager</code><span class="sig-paren">(</span><em>space</em>, <em>data=None</em>, <em>t=None</em>, <em>dt=None</em>, <em>latitude=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/shadows.html#ShadowsManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.shadows.ShadowsManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class in charge of the management for the shadows simulations.</p>
+<p>It can be initialize as standalone object or associated to a 
+<code class="docutils literal"><span class="pre">pyny.Space</span></code> through the <code class="docutils literal"><span class="pre">.shadow</span></code> method.</p>
+<p>The only needed for the simulator to run is <code class="docutils literal"><span class="pre">t</span></code> or <code class="docutils literal"><span class="pre">dt</span></code> and 
+the <code class="docutils literal"><span class="pre">latitude</span></code>. If the ShadowsManager is initialized from
+<code class="docutils literal"><span class="pre">pyny.Space.shadows</span></code> it is possible to run the execution in auto
+mode without inputing anything.</p>
+<p>The shadows are computed discretely with a set of sparsed <strong>sensible 
+points</strong> through the model. These points can be set with the 
+<code class="docutils literal"><span class="pre">.get_height</span></code> or the <code class="docutils literal"><span class="pre">mesh</span></code> methods.</p>
+<p>At the same time, the sun positions are also discrete. The 
+simulator needs a finite number of positions, given by their azimuth
+and zenit. Anyway, it is more convenient to give it a time vector and
+the latitude and let the program calculate the sun positions for 
+you.</p>
+<p>For convenience, the time is managed in absolute minutes within the 
+range of a year in the computations, that is, the first interval is 
+the Jan 1 00:00 [0] and the last is Dec 31 23:59 [525599]. 
+February 29 is not taken into account. It is also possible to 
+automatically create an equally spaced t vector by giving a fixed
+interval.</p>
+<p>In view of the fact that there are, for example, more than 8000 
+sunnys half-hour intervals in an year, the program precomputes a 
+discretization for the Solar Horizont (azimuth, zenit pairs) and 
+classify the <cite>t</cite> vector and the data into it. The goal is to 
+approximate these 8000 static simulations to a less than 340 with
+an error of lss than 3º (0.05rads).</p>
+<p>This discretization is manually* adjustable to be able to compute 
+large datasets, arbitrarily distributed in time, very fast at 
+low resolution before the serious computations start.</p>
+<p>For now, the Solar Horizont discretization can only be automatically 
+computed by a mesh. In the future more complex and convenient
+discretizations will be available. Anyway, it is possible to input
+a custom discretization.</p>
+<p>The atributes which can be safely manipulated to tune up the simulator
+before the computations are all which start with <em>arg_</em> (default
+values):</p>
+<blockquote>
+<div><ul>
+<li><p class="first">.arg_data</p>
+</li>
+<li><p class="first">.arg_t</p>
+</li>
+<li><p class="first">.arg_dt</p>
+</li>
+<li><p class="first">.arg_latitude = None</p>
+</li>
+<li><p class="first">.arg_run_true_time = False</p>
+</li>
+<li><p class="first">.arg_longitude = None (only for <code class="docutils literal"><span class="pre">true_time</span></code>)</p>
+</li>
+<li><p class="first">.arg_UTC = None (only for <code class="docutils literal"><span class="pre">true_time</span></code>)</p>
+</li>
+<li><dl class="first docutils">
+<dt>.arg_zenitmin = 0.1 (minimum zenit, avoid irrelevant errors </dt>
+<dd><p class="first last">from trigonometric approximations)</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">.arg_vor_size = 0.15 (mesh_size of the Voronoi diagram)</p>
+</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>space</strong> (<code class="docutils literal"><span class="pre">pyny.Space</span></code>) &#8211; 3D model to run the simulation.</li>
+<li><strong>data</strong> (<em>ndarray (shape=N), None</em>) &#8211; Data timeseries to project on the 3D model (radiation,
+for example).</li>
+<li><strong>t</strong> (<em>ndarray or list, None</em>) &#8211; Time vector in absolute minutes or datetime objects</li>
+<li><strong>dt</strong> (<em>int, None</em>) &#8211; Interval time to generate t vector.</li>
+<li><strong>latitude</strong> (<em>float (radians)</em>) &#8211; Local latitude.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">* In the future, the discretizations will be 
+automated based on error adjustment.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The shadows computation do not take care
+of the holes*, instead, they can be emulated by a collection of 
+polygons.</p>
+</div>
+<dl class="method">
+<dt id="pyny3d.shadows.ShadowsManager.Vonoroi_SH">
+<code class="descname">Vonoroi_SH</code><span class="sig-paren">(</span><em>mesh_size=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/shadows.html#ShadowsManager.Vonoroi_SH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.shadows.ShadowsManager.Vonoroi_SH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a equally spaced mesh on the Solar Horizont (SH).</p>
+<p>Computes the Voronoi diagram from a set of points given by pairs
+of (azimuth, zenit) values. This discretization completely
+covers all the Sun positions.</p>
+<p>The smaller mesh size, the better resolution obtained. it is 
+important to note that this affects the performance heavily.</p>
+<dl class="docutils">
+<dt>The generated information is stored in:</dt>
+<dd><ul class="first last simple">
+<li><strong>.t2vor_map</strong> (<em>ndarray</em>): Mapping between time vector and
+the Voronoi diagram.</li>
+<li><strong>.vor_freq</strong> (<em>ndarray</em>): Number of times a Sun position
+is inside each polygon in the Voronoi diagram.</li>
+<li><strong>.vor_surf</strong> (<em>``pyny.Surface``</em>): Voronoi diagram.</li>
+<li><strong>.vor_centers</strong> (<em>ndarray`</em>): Mass center of the 
+<code class="docutils literal"><span class="pre">pyny.Polygons</span></code> that form the Voronoi diagram.</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mesh_size</strong> (<em>float (in radians)</em>) &#8211; Mesh size for the square discretization of the
+Solar Horizont.</li>
+<li><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, generates a visualization of the Voronoi
+diagram.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In future versions this discretization will be
+improved substantially. For now, it is quite rigid and only
+admits square discretization.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.shadows.ShadowsManager.compute_shadows">
+<code class="descname">compute_shadows</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/shadows.html#ShadowsManager.compute_shadows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.shadows.ShadowsManager.compute_shadows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the <code class="docutils literal"><span class="pre">pyny.Space</span></code> stored in <code class="docutils literal"><span class="pre">.space</span></code> shadowing for
+the time intervals and Sun positions stored in <code class="docutils literal"><span class="pre">.arg_t</span></code> and
+<code class="docutils literal"><span class="pre">.sun_pos</span></code>, respectively.</p>
+<dl class="docutils">
+<dt>The generated information is stored in:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><strong>.light</strong> (<em>ndarray (dtype=bool)</em>): Array with the points </dt>
+<dd><p class="first last">in <code class="docutils literal"><span class="pre">pyny.Space</span></code> as columns and the Sun positions as 
+rows. Indicates whether the points are illuminated in
+each Sun position.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.shadows.ShadowsManager.get_sunpos">
+<code class="descname">get_sunpos</code><span class="sig-paren">(</span><em>t</em>, <em>true_time=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/shadows.html#ShadowsManager.get_sunpos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.shadows.ShadowsManager.get_sunpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Sun positions for the <em>t</em> time vector.</p>
+<p><em>t</em> have to be in absolute minutes (0 at 00:00 01 Jan). The and 
+in Sun positions calculated are in solar time, that is, maximun 
+solar zenit exactly at midday.</p>
+<dl class="docutils">
+<dt>The generated information is stored in:</dt>
+<dd><ul class="first last simple">
+<li><strong>.azimuth_zenit</strong> (<em>ndarray</em>)</li>
+<li><strong>.true_time</strong> (<em>datetime</em>): local time</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t</strong> (<em>ndarray (dtype=int)</em>) &#8211; Absolute minutes vector.</li>
+<li><strong>true_time</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, a datetime vector with the true local
+time will be stored at <code class="docutils literal"><span class="pre">.true_time</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Equivalent times in absolute minutes in year.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">ndarray (dtype=int)</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyny3d.shadows.ShadowsManager.to_minutes" title="pyny3d.shadows.ShadowsManager.to_minutes"><code class="xref py py-func docutils literal"><span class="pre">to_minutes()</span></code></a> to easily genetare valid input 
+t.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.shadows.ShadowsManager.project_data">
+<code class="descname">project_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/shadows.html#ShadowsManager.project_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.shadows.ShadowsManager.project_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign the sum of <code class="docutils literal"><span class="pre">integral</span></code>* to each sensible
+point in the <code class="docutils literal"><span class="pre">pyny.Space</span></code> for the intervals that the points
+are visible to the Sun.</p>
+<dl class="docutils">
+<dt>The generated information is stored in:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><strong>.proj_vor</strong> (<em>ndarray</em>): <code class="docutils literal"><span class="pre">.integral</span></code> projected to the </dt>
+<dd><p class="first last">Voronoi diagram.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>.proj_points</strong> (<em>ndarray</em>): <code class="docutils literal"><span class="pre">.integral</span></code> projected to </dt>
+<dd><p class="first last">the sensible points in the <code class="docutils literal"><span class="pre">pyny.Space</span></code>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">* <code class="docutils literal"><span class="pre">integral</span> <span class="pre">=</span> <span class="pre">np.diff(t)*data</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.shadows.ShadowsManager.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/shadows.html#ShadowsManager.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.shadows.ShadowsManager.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the shadowing computation with the values stored in 
+<code class="docutils literal"><span class="pre">self.arg_</span></code>. Precomputed information is stored in:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>.diff_t</strong> (<em>ndarray</em>): <code class="docutils literal"><span class="pre">np.diff(t)</span></code></li>
+<li><strong>.integral</strong> (<em>ndarray</em>): <code class="docutils literal"><span class="pre">data*np.diff(t)</span></code></li>
+</ul>
+</div></blockquote>
+<p>The steps are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#pyny3d.shadows.ShadowsManager.get_sunpos" title="pyny3d.shadows.ShadowsManager.get_sunpos"><code class="xref py py-func docutils literal"><span class="pre">get_sunpos()</span></code></a></li>
+<li><a class="reference internal" href="#pyny3d.shadows.ShadowsManager.Vonoroi_SH" title="pyny3d.shadows.ShadowsManager.Vonoroi_SH"><code class="xref py py-func docutils literal"><span class="pre">Vonoroi_SH()</span></code></a></li>
+<li><a class="reference internal" href="#pyny3d.shadows.ShadowsManager.compute_shadows" title="pyny3d.shadows.ShadowsManager.compute_shadows"><code class="xref py py-func docutils literal"><span class="pre">compute_shadows()</span></code></a></li>
+<li><a class="reference internal" href="#pyny3d.shadows.ShadowsManager.project_data" title="pyny3d.shadows.ShadowsManager.project_data"><code class="xref py py-func docutils literal"><span class="pre">project_data()</span></code></a></li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Retruns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the future better ways to calculate <code class="docutils literal"><span class="pre">integral</span></code>
+will be added.</p>
+</div>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyny3d.shadows.ShadowsManager.to_minutes">
+<em class="property">static </em><code class="descname">to_minutes</code><span class="sig-paren">(</span><em>time_obj=None</em>, <em>dt=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/shadows.html#ShadowsManager.to_minutes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.shadows.ShadowsManager.to_minutes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts <code class="docutils literal"><span class="pre">datetime</span></code> objects lists into absolute minutes 
+vectors. It also can be used to generate absolute minutes vector
+from a time interval (in minutes).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>time_obj</strong> (list of <code class="docutils literal"><span class="pre">datetime</span></code> objects) &#8211; <code class="docutils literal"><span class="pre">datetime</span></code> objects to convert into absolute 
+minutes.</li>
+<li><strong>dt</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Constant interval time to generate a time vector for
+a whole year.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Equivalent times in absolute minutes in year.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray (dtype=int)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the time_obj has times higher than 23:59 31 Dec, 
+they will be removed.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If a leap-year is introduced, the method will remove
+the last year (31 Dec) in order to keep the series 
+continuous.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="viz">
+<span id="doc-viz"></span><h3><a class="toc-backref" href="#id17">Viz</a><a class="headerlink" href="#viz" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="_images/Viz.png"><img alt="_images/Viz.png" src="_images/Viz.png" style="width: 868.3499999999999px; height: 316.75px;" /></a>
+<p class="caption"><span class="caption-text"><em>Examples of visualizations. Left to right: Voronoi diagram of the Solar
+Horizont, Frequency of Sun positions in the diagram and timeseries data
+projected to the diagram.</em></span></p>
+</div>
+<dl class="class">
+<dt id="pyny3d.shadows.Viz">
+<em class="property">class </em><code class="descclassname">pyny3d.shadows.</code><code class="descname">Viz</code><span class="sig-paren">(</span><em>ShadowsMaganer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/shadows.html#Viz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.shadows.Viz" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class stores the visualization methods. It is linked with 
+the ShadowsManager class by its attribute <code class="docutils literal"><span class="pre">.viz</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ShadowsMaganer</strong> &#8211; ShadowsMaganer instance to compute the 
+visualizations.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyny3d.shadows.Viz.exposure_plot">
+<code class="descname">exposure_plot</code><span class="sig-paren">(</span><em>places=-1</em>, <em>c_poly='default'</em>, <em>c_holes='default'</em>, <em>s_sop=25</em>, <em>extra_height=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/shadows.html#Viz.exposure_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.shadows.Viz.exposure_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the exposure of the sensible points in a space to the data
+and the Sun positions. It is required to previously compute the 
+shadowing.</p>
+<p>If the computation has been made with a data timeseries, the plot
+will have a colorbar. Units are accumulated kilounits*hour (for 
+the series), that is, if the input data is in Watts 
+(irradiation) for a whole year, the output will be 
+kWh received in an entire year.</p>
+<p>If there is no data inputed, the plot will show only the number
+of times each point &#8220;has been seen by the Sun&#8221; along the series.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>places</strong> (<em>int or list</em>) &#8211; Indexes of the places to plot. If -1, plots all.</li>
+<li><strong>c_poly</strong> (<em>matplotlib color, &#8216;default&#8217; or &#8216;t&#8217; (transparent)</em>) &#8211; Polygons color.</li>
+<li><strong>c_holes</strong> (<em>matplotlib color, &#8216;default&#8217; or &#8216;t&#8217; (transparent)</em>) &#8211; Holes color.</li>
+<li><strong>s_sop</strong> (<em>float or ndarray</em>) &#8211; Set of points size.</li>
+<li><strong>extra_height</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Extra elevation for the points in the plot.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyny3d.shadows.Viz.vor_plot">
+<code class="descname">vor_plot</code><span class="sig-paren">(</span><em>which='vor'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/shadows.html#Viz.vor_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.shadows.Viz.vor_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Voronoi diagram visualizations. There are three types:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first"><strong>vor</strong>: Voronoi diagram of the Solar Horizont.</p>
+</li>
+<li><dl class="first docutils">
+<dt><strong>freq</strong>: Frequency of Sun positions in t in the Voronoi</dt>
+<dd><p class="first last">diagram of the Solar Horizont.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>data</strong>: Accumulated time integral of the data projected </dt>
+<dd><p class="first last">in the Voronoi diagram of the Solar Horizont.</p>
+</dd>
+</dl>
+</li>
+</ol>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>which</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Type of visualization.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</div>
+</div>
+<div class="section" id="module-pyny3d.utils">
+<span id="utils-auxiliar-module"></span><h2><a class="toc-backref" href="#id18"><code class="docutils literal"><span class="pre">utils</span></code> auxiliar module</a><a class="headerlink" href="#module-pyny3d.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyny3d.utils.arange_col">
+<code class="descclassname">pyny3d.utils.</code><code class="descname">arange_col</code><span class="sig-paren">(</span><em>n</em>, <em>dtype=&lt;class 'int'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/utils.html#arange_col"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.utils.arange_col" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <code class="docutils literal"><span class="pre">np.arange</span></code> in a column form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Length of the array.</li>
+<li><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#type" title="(in Python v2.7)"><em>type</em></a>) &#8211; Type of the array.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">np.arange</span></code> in a column form.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyny3d.utils.bool2index">
+<code class="descclassname">pyny3d.utils.</code><code class="descname">bool2index</code><span class="sig-paren">(</span><em>bool_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/utils.html#bool2index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.utils.bool2index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a numpy array with the indices where bool_ is True.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bool</strong> (<em>ndarray (type=bool)</em>) &#8211; bool array to extract Trues positions.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Array with the indices where bool_ is True.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyny3d.utils.index2bool" title="pyny3d.utils.index2bool"><code class="xref py py-func docutils literal"><span class="pre">index2bool()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyny3d.utils.index2bool">
+<code class="descclassname">pyny3d.utils.</code><code class="descname">index2bool</code><span class="sig-paren">(</span><em>index</em>, <em>length=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/utils.html#index2bool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.utils.index2bool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a numpy boolean array with Trues in the input index 
+positions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>index</strong> (<em>ndarray (type=int)</em>) &#8211; index array with the Trues positions.</li>
+<li><strong>length</strong> (<em>int or None</em>) &#8211; Length of the returned array.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">array with Trues in the input index positions.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyny3d.utils.bool2index" title="pyny3d.utils.bool2index"><code class="xref py py-func docutils literal"><span class="pre">bool2index()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyny3d.utils.sort_numpy">
+<code class="descclassname">pyny3d.utils.</code><code class="descname">sort_numpy</code><span class="sig-paren">(</span><em>array</em>, <em>col=0</em>, <em>order_back=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyny3d/utils.html#sort_numpy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyny3d.utils.sort_numpy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sorts the columns for an entire <code class="docutils literal"><span class="pre">ndarrray</span></code> according to sorting
+one of them.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>array</strong> (<em>ndarray</em>) &#8211; Array to sort.</li>
+<li><strong>col</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Master column to sort.</li>
+<li><strong>order_back</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, also returns the index to undo the
+new order.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sorted_array or [sorted_array, order_back]</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray, list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="README.html">README</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="scheme.html">Modules scheme</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, José Antonio Fernández-Fernández.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>
