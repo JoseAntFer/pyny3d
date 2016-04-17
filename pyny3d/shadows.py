@@ -9,8 +9,8 @@ class ShadowsManager(object):
     It can be initialize as standalone object or associated to a 
     ``pyny.Space`` through the ``.shadow`` method.
     
-    The only needed for the simulator to run is ``t`` or ``dt`` and 
-    the ``latitude``. If the ShadowsManager is initialized from
+    The only argument needed for the simulator to run is ``t`` or ``dt``
+    and the ``latitude``. If the ShadowsManager is initialized from
     ``pyny.Space.shadows`` it is possible to run the execution in auto
     mode without inputing anything.
     
@@ -48,7 +48,7 @@ class ShadowsManager(object):
     a custom discretization.
     
     The atributes which can be safely manipulated to tune up the simulator
-    before the computations are all which start with *arg_* (default
+    before the computations are all which start with *arg_* (= default
     values):
 
         * .arg_data
@@ -114,7 +114,7 @@ class ShadowsManager(object):
         self.true_time = None
         
         ## compute_shadows
-        self.light = None
+        self.light_vor = None
         
         ## project_data
         self.proj_vor = None
@@ -142,18 +142,19 @@ class ShadowsManager(object):
         """
         # Adapt series
         ## time
-        if self.arg_t is not None:
-            import datetime
-            if type(self.arg_t[0]) == datetime.datetime:
-                self.arg_t = self.to_minutes(time_obj=self.arg_t)
+        if self.integral is None:
+            if self.arg_t is not None:
+                import datetime
+                if type(self.arg_t[0]) == datetime.datetime:
+                    self.arg_t = self.to_minutes(time_obj=self.arg_t)
+                else:
+                    self.arg_t = np.round(self.arg_t)
+            elif self.arg_dt is not None:
+                self.arg_dt = np.round(self.arg_dt)
+                self.arg_t = self.to_minutes(dt=self.arg_dt)
             else:
-                self.arg_t = np.round(self.arg_t)
-        elif self.arg_dt is not None:
-            self.arg_dt = np.round(self.arg_dt)
-            self.arg_t = self.to_minutes(dt=self.arg_dt)
-        else:
-            raise ValueError('At least one time parameter is needed.')
-        self.diff_t = np.diff(self.arg_t)
+                raise ValueError('At least one time parameter is needed.')
+            self.diff_t = np.diff(self.arg_t)
         
         ## data
         if self.arg_data is None:
@@ -161,8 +162,10 @@ class ShadowsManager(object):
         self.integral = np.hstack((0, self.arg_data[1:]/1000*self.diff_t/60))
 
         # Computation
-        self.get_sunpos(self.arg_t, self.arg_run_true_time)
-        self.Vonoroi_SH(self.arg_vor_size)
+        if self.azimuth_zenit is None:
+            self.get_sunpos(self.arg_t, self.arg_run_true_time)
+        if self.vor_centers is None:
+            self.Vonoroi_SH(self.arg_vor_size)
         self.compute_shadows()
         self.project_data()
     
@@ -200,7 +203,9 @@ class ShadowsManager(object):
         """
         from scipy.spatial import Voronoi
         from pyny3d.utils import sort_numpy
-        
+        state = pyny.Polygon.verify
+        pyny.Polygon.verify = False
+
         # Sort and remove NaNs
         xy_sorted, order_back = sort_numpy(self.azimuth_zenit, col=1, 
                                            order_back=True)
@@ -239,6 +244,7 @@ class ShadowsManager(object):
         self.vor_surf = pyny.Surface(vor)
         self.vor_centers = np.array([poly.get_centroid()[:2] 
                                      for poly in self.vor_surf])
+        pyny.Polygon.verify = state
 
     def get_sunpos(self, t, true_time = False):
         """
@@ -332,6 +338,9 @@ class ShadowsManager(object):
         :returns: None
         """
         from pyny3d.utils import sort_numpy, bool2index, index2bool
+        state = pyny.Polygon.verify
+        pyny.Polygon.verify = False
+
         model = self.space
         
         light = []
@@ -339,7 +348,7 @@ class ShadowsManager(object):
             # Rotation of the whole ``pyny.Space``
             polygons_photo, _, points_to_eval = model.photo(sun, False)
             # Auxiliar pyny.Surface to fast management of pip
-            Photo_surface = pyny.Surface(polygons_photo, check_convexity=False)
+            Photo_surface = pyny.Surface(polygons_photo)
             Photo_surface.lock()
            
             # Sort/unsort points
@@ -378,8 +387,11 @@ class ShadowsManager(object):
                                         length=points_to_eval.shape[0])
             # Updating the solution
             light.append(lighted_bool_0[order_back])
-        self.light = np.vstack(light)
-        
+        # Storing the solution
+        self.light_vor = np.vstack(light)
+        self.light = self.light_vor[self.t2vor_map]
+        pyny.Polygon.verify = state
+
     def project_data(self):
         '''
         Assign the sum of ``integral``\* to each sensible
@@ -397,7 +409,7 @@ class ShadowsManager(object):
         .. note:: \* ``integral = np.diff(t)*data``
         '''
         from pyny3d.utils import sort_numpy
-        proj = self.light.astype(float)
+        proj = self.light_vor.astype(float)
         
         map_ = np.vstack((self.t2vor_map, self.integral)).T
         map_sorted = sort_numpy(map_)
@@ -485,7 +497,7 @@ class Viz(object):
         import matplotlib.cm as cm
         import matplotlib.pyplot as plt
         sm = self.SM
-        if sm.light is None:
+        if sm.light_vor is None:
             raise ValueError('The computation has not been made yet')
 
         if which is 'vor':
@@ -559,7 +571,7 @@ class Viz(object):
         import matplotlib.colors as mcolors
 
         sm = self.SM
-        if sm.light is None:
+        if sm.light_vor is None:
             raise ValueError('The shadowing has not been computed yet')
         proj_data = sm.proj_points*100/sm.proj_points.max()
         

@@ -38,12 +38,12 @@ class root(object):
         :returns: None, axes
         :rtype: mplot3d.Axes3D, bool
         """
-        import matplotlib.pylab as pl
+        import matplotlib.pylab as plt
         import mpl_toolkits.mplot3d as mplot3d
         
         # Bypass a plot
         if color == False:
-            if ax is None: ax = mplot3d.Axes3D(fig=pl.figure())
+            if ax is None: ax = mplot3d.Axes3D(fig=plt.figure())
             return ax
         
         # Clone and extract the information from the object
@@ -58,7 +58,7 @@ class root(object):
         
         # Cascade plot?
         if ax is None: # Non cascade
-            ax = mplot3d.Axes3D(fig=pl.figure())
+            ax = mplot3d.Axes3D(fig=plt.figure())
         else:
             old_pos = np.array([ax.get_xbound(),
                                 ax.get_ybound(),
@@ -2077,8 +2077,7 @@ class Space(root):
             sop = points[ex[2] ,:]
             return [polygons, holes, sop]
             
-    def get_height(self, points, edge=True, attach=False, 
-                   extra_height=0):
+    def get_height(self, points, edge=True, attach=False, extra_height=0):
         """
         Launch ``pyny.Place.get_height(points)`` recursively for all 
         the ``pyny.Place`` individually.
@@ -2101,11 +2100,9 @@ class Space(root):
         :returns: (x, y, z)
         :rtype: ndarray
         """
-        xyz = {}
-        for i, place in enumerate(self):
-            xyz[i] = place.get_height(points, edge, attach,
-                                      extra_height)
-        if not attach: return xyz
+        for place in self:
+            points = place.get_height(points, edge, attach, extra_height)
+        if not attach: return points
         
     def mesh(self, mesh_size=1, extra_height=0.1, edge=True, attach=True):
         """
@@ -2410,12 +2407,12 @@ class Space(root):
         if init == 'auto':
             # Resolution
             if resolution == 'low':
-                factor = 10
+                factor = 20
             elif resolution == 'mid':
-                factor = 30
+                factor = 40
             elif resolution == 'high':
-                factor = 60
-            if dt is None: dt = 1000/factor
+                factor = 70
+            if dt is None: dt = 6e4/factor
             if latitude is None: latitude = 0.65
             
             # Autofill ShadowsManager Object
@@ -2425,7 +2422,7 @@ class Space(root):
                 max_bound = np.diff(self.get_domain(), axis=0).max()
                 sm.space.mesh(mesh_size=max_bound/factor, edge=True)
             ## General parameters
-            sm.arg_vor_size = 6/factor
+            sm.arg_vor_size = 3.5/factor
             sm.run()
             return sm
             

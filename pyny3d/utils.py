@@ -72,7 +72,8 @@ def index2bool(index, length=None):
     
     .. seealso:: :func:`bool2index`
     """
-    if index.shape[0] == 0: return np.arange(0, dtype = bool)
+    if index.shape[0] == 0 and length is None:
+        return np.arange(0, dtype = bool)
     if length is None: length = index.max()+1
         
     sol = np.zeros(length, dtype=bool)
