@@ -4,6 +4,8 @@ README
 .. contents::
     :local:
 
+Please, visit the web for documentation, examples and tutorials: <http://pythonhosted.org/pyny3d/index.html>.
+
 Abstract
 --------
 *pyny3d* is a Python3 *tyny* 3D tool for build and generate information from
