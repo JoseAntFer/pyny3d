@@ -4,7 +4,7 @@ README
 .. contents::
     :local:
 
-Please, visit the web for documentation, examples and tutorials: <http://pythonhosted.org/pyny3d/index.html>.
+Please, visit the `Web <http://pythonhosted.org/pyny3d/index.html>`__ for documentation, examples and tutorials.
 
 Abstract
 --------
