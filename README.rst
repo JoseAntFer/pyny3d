@@ -106,7 +106,7 @@ Bugs
       great 3D graph plotter. When it is required to plot a 2D projection of a 
       3D multi-body representation, it has problems to figure out which objects
       are in front and which ones are behind. It is important to remark that this
-      is only a visualization problem that DO NOT affects internal 'pyny3d'
+      is only a visualization problem that DO NOT affects internal *pyny3d*
       calculations, indeed, all the `plot` commands are no-return paths.
       
       I am studying to implement `Mayavi` to solve that problem and, at the same
