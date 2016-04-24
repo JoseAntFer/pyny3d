@@ -91,7 +91,7 @@ Upcoming improvements
 ~~~~~~~~~~~~~~~~~~~~~
 
     * ``.stretch()`` method.
-    * Compute volumes and areas.
+    * Calculate volumes.
     * Extrude polyhedra on arbitrary directions.
     * Rotate about arbitrary axes.
 
