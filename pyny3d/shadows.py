@@ -11,45 +11,50 @@ class ShadowsManager(object):
     
     The only argument needed for the simulator to run is ``t`` or ``dt``
     and the ``latitude``. If the ShadowsManager is initialized from
-    ``pyny.Space.shadows`` it is possible to run the execution in auto
+    ``pyny.Space.shadows`` it is possible to run the execution in *auto*
     mode without inputing anything.
     
-    The shadows are computed discretely with a set of sparsed **sensible 
-    points** through the model. These points can be set with the 
-    ``.get_height`` or the ``mesh`` methods.
+    Some explanaions about how it works:
     
-    At the same time, the sun positions are also discrete. The 
+    The shadows are computed discretely using a set of distributed
+    **sensible points** through the model. These points can be set with 
+    the ``.get_height(attach=True)`` or the ``.mesh()`` methods.
+    
+    At the same time, the sun positions are also discretized. The 
     simulator needs a finite number of positions, given by their azimuth
-    and zenit. Anyway, it is more convenient to give it a time vector and
-    the latitude and let the program calculate the sun positions for 
+    and zenit. Anyway, it is more convenient to give it a time vector 
+    and the latitude and let the program calculate the sun positions for 
     you.
     
-    For convenience, the time is managed in absolute minutes within the 
-    range of a year in the computations, that is, the first interval is 
-    the Jan 1 00:00 [0] and the last is Dec 31 23:59 [525599]. 
-    February 29 is not taken into account. It is also possible to 
+    For convenience, the time is managed in "absolute minutes" within 
+    the range of a year in the computations, that is, the first possible
+    interval [0] is the Jan 1 00:00 and the last [525599] is Dec 31 
+    23:59. February 29 is not taken into account. It is possible to 
     automatically create an equally spaced t vector by giving a fixed
-    interval.
+    interval, althought the inputed vectors an be irregular.
     
-    In view of the fact that there are, for example, more than 8000 
+    In view of the fact that there are, potentially, more than 8000 
     sunnys half-hour intervals in an year, the program precomputes a 
     discretization for the Solar Horizont (azimuth, zenit pairs) and 
-    classify the `t` vector and the data into it. The goal is to 
-    approximate these 8000 static simulations to a less than 340 with
-    an error of lss than 3º (0.05rads).
+    classify the *t* and *data* vectors. The goal is to approximate 
+    these 8000 interval simulations to a less than 340 with an maximum 
+    error of 3 deg (0.05rads).
     
-    This discretization is manually\* adjustable to be able to compute 
-    large datasets, arbitrarily distributed in time, very fast at 
-    low resolution before the serious computations start.
+    This discretization is manually\* adjustable to be able to fastly
+    compute large datasets at low resolution before the serious 
+    computations start.
     
     For now, the Solar Horizont discretization can only be automatically 
     computed by a mesh. In the future more complex and convenient
     discretizations will be available. Anyway, it is possible to input
-    a custom discretization.
+    a custom discretization by manually introducing the atributtes 
+    described in :func:`Voronoi_SH`.
+        
+    Finally,    
     
-    The atributes which can be safely manipulated to tune up the simulator
-    before the computations are all which start with *arg_* (= default
-    values):
+    the atributes which can be safely manipulated to tune up the 
+    simulator before the computations are all which start with *arg_* 
+    (= default values):
 
         * .arg_data
         * .arg_t
@@ -126,7 +131,8 @@ class ShadowsManager(object):
         ``self.arg_``. Precomputed information is stored in:
         
             * **.diff_t** (*ndarray*): ``np.diff(t)``
-            * **.integral** (*ndarray*): ``data*np.diff(t)``
+            * **.integral** (*ndarray*): Trapezoidal data integration 
+              over time.
 
         The steps are:
         
@@ -136,9 +142,6 @@ class ShadowsManager(object):
             * :func:`project_data`
         
         :retruns: None
-        
-        .. note:: In the future better ways to calculate ``integral``
-            will be added.
         """
         # Adapt series
         ## time
@@ -159,7 +162,12 @@ class ShadowsManager(object):
         ## data
         if self.arg_data is None:
             self.arg_data = np.ones(self.arg_t.shape[0])
-        self.integral = np.hstack((0, self.arg_data[1:]/1000*self.diff_t/60))
+        dt = self.diff_t/60  # hs
+        rect = self.arg_data[:-1]/1000*dt  # kilounits
+        triang_side = np.diff(self.arg_data)
+        triang = 0.5*triang_side*dt
+        self.integral = rect + triang
+        self.integral = np.hstack((0, self.integral))
 
         # Computation
         if self.azimuth_zenit is None:
@@ -177,8 +185,8 @@ class ShadowsManager(object):
         of (azimuth, zenit) values. This discretization completely
         covers all the Sun positions.
         
-        The smaller mesh size, the better resolution obtained. it is 
-        important to note that this affects the performance heavily.
+        The smaller mesh size, the better resolution obtained. It is 
+        important to note that this heavily affects the performance.
         
         The generated information is stored in:
             * **.t2vor_map** (*ndarray*): Mapping between time vector and
@@ -246,7 +254,7 @@ class ShadowsManager(object):
                                      for poly in self.vor_surf])
         pyny.Polygon.verify = state
 
-    def get_sunpos(self, t, true_time = False):
+    def get_sunpos(self, t, true_time=False):
         """
         Computes the Sun positions for the *t* time vector.
         
@@ -325,15 +333,18 @@ class ShadowsManager(object):
         
     def compute_shadows(self):
         """
-        Computes the ``pyny.Space`` stored in ``.space`` shadowing for
-        the time intervals and Sun positions stored in ``.arg_t`` and
-        ``.sun_pos``, respectively.
+        Computes the shadoing for the ``pyny.Space`` stored in 
+        ``.space`` for the time intervals and Sun positions stored in 
+        ``.arg_t`` and ``.sun_pos``, respectively.
         
         The generated information is stored in:
-            * **.light** (*ndarray (dtype=bool)*): Array with the points 
-                in ``pyny.Space`` as columns and the Sun positions as 
-                rows. Indicates whether the points are illuminated in
-                each Sun position.
+            * **.light_vor** (*ndarray (dtype=bool)*): Array with the 
+              points in ``pyny.Space`` as columns and the discretized 
+              Sun positions as rows. Indicates whether the points are 
+              illuminated in each Sun position.
+            * **.light** (*ndarray (dtype=bool)*): The same as 
+              ``.light_vor`` but with the time intervals in ``.arg_t``
+              as rows instead of the Sun positions.
         
         :returns: None
         """
@@ -394,9 +405,9 @@ class ShadowsManager(object):
 
     def project_data(self):
         '''
-        Assign the sum of ``integral``\* to each sensible
-        point in the ``pyny.Space`` for the intervals that the points
-        are visible to the Sun.
+        Assign the sum of ``.integral``\* to each sensible point in the
+        ``pyny.Space`` for the intervals that the points are visible to 
+        the Sun.
 
         The generated information is stored in:
             * **.proj_vor** (*ndarray*): ``.integral`` projected to the 
@@ -406,7 +417,8 @@ class ShadowsManager(object):
 
         :returns: None
         
-        .. note:: \* ``integral = np.diff(t)*data``
+        .. note:: \* Trapezoidal data (``.arg_data``) integration over
+            time (``.arg_t``).
         '''
         from pyny3d.utils import sort_numpy
         proj = self.light_vor.astype(float)
@@ -627,5 +639,3 @@ class Viz(object):
         else:
             plt.title('Sun exposure')
         
-        
-    

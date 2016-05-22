@@ -24,16 +24,17 @@ class root(object):
     
     def plot(self, color='default', ret=False, ax=None):
         """
-        Generates a 3D visualization.
+        Generates a basic 3D visualization.
   
         :param color: Polygons color.
+        :type color: matplotlib color, 'default' or 't' (transparent)
         :param ret: If True, returns the figure. It can be used to add 
             more elements to the plot or to modify it.
-        :param ax: This plot will be represented 
-            on top. This is used to represent multiple plots from 
-            multiple geometries, overlapping them recursively.
-        :type color: matplotlib color, 'default' or 't' (transparent)
         :type ret: bool
+        :param ax: If a matplotlib axes given, this method will 
+            represent the plot on top of this axes. This is used to
+            represent multiple plots from multiple geometries, 
+            overlapping them recursively.
         :type ax: mplot3d.Axes3D, None
         :returns: None, axes
         :rtype: mplot3d.Axes3D, bool
@@ -119,6 +120,9 @@ class root(object):
     def copy(self):
         """
         :returns: A deepcopy the entire instance.
+        :rtype: ``pyny3d`` object
+        
+        .. seealso:: :func:`save`, :func:`restore`
         """
         import copy
         return self.__class__(**copy.deepcopy(self.get_seed()))
@@ -129,6 +133,8 @@ class root(object):
         ``.restore()`` method will return this copy.
 
         :returns: None
+        
+        .. seealso:: :func:`restore`, :func:`copy`
         """
         self.backup = self.copy()
         
@@ -138,7 +144,10 @@ class root(object):
         method can be used any time to save the current state of an 
         object.
         
-        :returns: Restored version of this object.
+        :returns: Last saved version of this object.
+        :rtype: ``pyny3d`` object
+
+        .. seealso:: :func:`save`, :func:`copy`
         """
         if self.backup is not None:
             return self.backup
@@ -148,22 +157,23 @@ class root(object):
         
 class Polygon(root):
     """
-    Basic geometry object. It generates and stores all the information
-    relative to a polygon in 3D.
+    The most basic geometry class. It generates and stores all the 
+    information relative to a 3D polygon.
     
     Instances of this class work as iterable object. When indexed, 
     returns the points which conform it.
     
-    :param points: np.array with the sorted points which form the 
-        polygon (xyz or xy). Do not repeat the first point at the end.
+    :param points: Sorted points which form the polygon (xyz or xy). 
+        Do not repeat the first point at the end.
     :type points: ndarray *shape=(N, 2 or 3)*
-    :param make_ccw: If True, points will be sorted ccw.
-    :type make_ccw: bool
+    :param check_convexity: If True, an error will be raised for 
+        concave Polygons. It is a requirement of the code that the
+        polygons have to be convex.
+    :type check_convexity: bool
     :returns: None
   
     .. note:: This object can be locked (``.lock()`` method) in order to 
-        precompute the domain and the path for faster further 
-        computations.
+        precompute information for faster further computations.
     """
     verify = True
     def __init__(self, points, make_ccw=True, **kwargs):
@@ -203,14 +213,12 @@ class Polygon(root):
         Surface.classify.
 
         Stores ``self.domain`` and ``self.path``, both very used in
-        the shadows simulation, in order to avoid unnecesssary
-        calculations.
-        
-        Once locked, it is possible to retrieve the domain and the path
-        of a polygon by ``self.domain`` and ``self.path`` instead 
-        launching ``self.get_path()`` and ``self.get_domain()``.
+        the shadows simulation, in order to avoid later unnecessary 
+        calculations and verifications.
         
         :returns: None
+        
+        .. warning:: Unnecessary locks can slowdown your code.
         """
         if not self.locked:
             self.path = self.get_path()
@@ -235,14 +243,16 @@ class Polygon(root):
         counter-clockwise order. This is a requirement for the rest of 
         the program.
         
-        :param points: Polygons color.
-        :type points: ndarray with points (xyz or xy) in rows
+        :param points: Points intented to form a polygon.
+        :type points: ndarray with points xyz in rows
         :returns: Whether a polygon is convex or not.
         :rtype: bool
         
         .. note:: Despite the code works for ccw polygons, in order to 
             avoid possible bugs it is always recommended to use ccw 
             rather than cw.
+            
+        .. warning:: This method do not check the order of the points.
         """
         # Verification based on the cross product
         n_points = points.shape[0]
@@ -264,9 +274,16 @@ class Polygon(root):
     def make_ccw(points):
         """
         Static method. Returns a counterclock wise ordered sequence of 
-        points based on its z=0 projection. If there are any repeated
-        point the method will raise an error.
+        points. If there are any repeated point, the method will raise 
+        an error.
         
+        Due to the 3D character of the package, the order or the points
+        will be tried following this order:
+		
+            1. z=0 pprojection
+            2. x=0 pprojection
+            3. y=0 pprojection
+
         :param points: Points to form a polygon (xyz or xy)
         :type points: ndarray with points (xyz or xy) in rows
         :returns: ccw version of the points.
@@ -281,40 +298,37 @@ class Polygon(root):
         if check.min() == 0: raise ValueError('Repeated point: \n'+str(points))
         
         # Convexity
-        ## If there is no convex Polygon in any projection, the Polygon
-        # is wrong
         hull = None
         for cols in [(0, 1), (1, 2), (0, 2)]:
             try:
                 hull = ConvexHull(points[:, cols])
             except:
                 pass
-        if hull is None:
-            raise ValueError('Wrong polygon: \n'+str(points))
-        return points[hull.vertices]
+            if hull is not None: return points[hull.vertices]
+        if hull is None: raise ValueError('Wrong polygon: \n'+str(points))
 
     def to_2d(self):
         """
-        Generates the real 2D polygon of the 3D polygon.
+        Generates the real 2D polygon of the 3D polygon. This method
+		performs a change of reference system obtaining the same polygon
+		but with the new z=0 plane containing the polygon.
         
         This library mostly uses the z=0 projection to perform 
         operations with the polygons. For this reason, if real 2D
-        planar operations are required (draw a real matplotlib.path, 
-        calculate real area...) the best way is to create a new 
-        ``pyny.Polygon`` with this method.
+        planar operations are required (like calculate real area) the 
+        best way is to create a new ``pyny.Polygon`` with this method.
         
         :returns: Planar orthogonal view of the polygon.
         :rtype: ``pyny.Polygon``
         """
-        # Normal
+        # New reference system
         a = self[1]-self[0]
-        a = a/np.linalg.norm(a)
-    
+        a = a/np.linalg.norm(a) # arbitrary first axis
         n = np.cross(a, self[-1]-self[0])
-        n = n/np.linalg.norm(n)
+        n = n/np.linalg.norm(n) # normal axis
+        b = -np.cross(a, n) # Orthogonal to the others
         
-        b = -np.cross(a, n)
-        
+		# Reference system change
         R_inv = np.linalg.inv(np.array([a, b, n])).T
         real = np.dot(R_inv, self.points.T).T
         real[np.isclose(real, 0)] = 0
@@ -323,12 +337,13 @@ class Polygon(root):
 
     def contains(self, points, edge=True):
         """
-        Point-in-Polygon for the z=0 projection.
+        Point-in-Polygon algorithm for multiple points for the z=0 
+        projection of the ``pyny.Polygon``.
         
         :param points: Set of points to evaluate.
         :type points: ndarray with points (xyz or xy) in rows
         :param edge: If True, consider the points in the Polygon's edge
-            inside the Polygon.
+            as inside the Polygon.
         :type edge: bool
         :returns: Whether each point is inside the polygon or not (in
             z=0 projection).
@@ -340,7 +355,7 @@ class Polygon(root):
 
     def get_parametric(self, check=True, tolerance=0.001):
         """
-        Computes the parametric equation of the plane that contains 
+        Calculates the parametric equation of the plane that contains 
         the polygon. The output has the form np.array([a, b, c, d]) 
         for:
 
@@ -391,10 +406,6 @@ class Polygon(root):
         """
         :returns: shapely.Polygon object of the z=0 projection of 
             this polygon.
-        
-        .. note:: This method automatically stores the solution in order
-            to do not repeat calculations if the user needs to call it 
-            more than once.
         """
         if self.shapely == None:
             from shapely.geometry import Polygon as shPolygon
@@ -422,21 +433,21 @@ class Polygon(root):
 
     def get_height(self, points, only_in = True, edge=True, full=False):
         """
-        Given a set of points, computes the z value for the parametric
-        equation of the plane where the polygon belongs.
+        Given a set of points, it computes the z value for the 
+		parametric equation of the plane where the polygon belongs.
         
         Only the two first columns of the points will be taken into 
         account as x and y.
         
-        The points outside the object will have a NaN value in the
-        z column. If the inputed points has a third column the z values
-        outside the Surface's domain will remain unchanged, the rest
-        will be replaced.
+        By default, the points outside the object will have a NaN value 
+        in the z column. If the inputed points has a third column the z 
+        values outside the Surface's domain will remain unchanged, the 
+        rest will be replaced.
         
-        :param points: list of coordinates of the points to calculate.
+        :param points: Coordinates of the points to calculate.
         :type points: ndarray shape=(N, 2 or 3)
-        :param only_in: returns only the points which are inside of the
-            Polygon.
+        :param only_in: If True, computes only the points which are 
+            inside of the Polygon.
         :type only_in: bool
         :param edge: If True, consider the points in the Polygon's edge
             inside the Polygon.
@@ -464,8 +475,8 @@ class Polygon(root):
             
     def get_seed(self):
         """
-        Collect the required information to generate a data estructure 
-        that can be used to recreate exactly the same Geometry object
+        Collects the required information to generate a data estructure 
+        that can be used to recreate exactly the same geometry object
         via *\*\*kwargs*.
         
         :returns: Object's sufficient info to initialize it.
@@ -567,22 +578,24 @@ class Polygon(root):
         space = Space(Place(Surface(self)))
         return space.move(d_xyz, inplace=False)[0].surface[0]
 
-    def zrotate(self, angle, axis=None):
+    def rotate(self, angle, direction='z', axis=None):
         """
         Returns a new Polygon which is the same but rotated about a 
-        vertical axis.
+        given axis.
         
         If the axis given is ``None``, the rotation will be computed
         about the Surface's centroid.
         
         :param angle: Rotation angle (in radians)
         :type angle: float
+        :param direction: Axis direction ('x', 'y' or 'z')
+        :type direction: str
         :param axis: Point in z=0 to perform as rotation axis
         :type axis: tuple (len=2 or 3) or None
         :returns: ``pyny.Polygon``
         """
         space = Space(Place(Surface(self)))
-        return space.zrotate(angle, axis)[0].surface[0]
+        return space.rotate(angle, direction, axis)[0].surface[0]
         
     def mirror(self, axes='x'):
         """
@@ -597,7 +610,7 @@ class Polygon(root):
 
     def matrix(self, x=(0, 0), y=(0, 0) , z=(0, 0)):
         """
-        Copy the ``pyny.Polygon`` itself along a 3D matrix given by the 
+        Copy the ``pyny.Polygon`` along a 3D matrix given by the 
         three tuples x, y, z:        
 
         :param x: Number of copies and distance between them in this
@@ -613,7 +626,7 @@ class Polygon(root):
 class Surface(root):
     """
     This class groups contiguous polygons (coplanars or not). These
-    polygons cannot overlap each other on the z=0 projection.\*
+    polygons cannot overlap each other on the z=0 projection\*.
     
     This object is a composition of polygons and holes. The polygons can
     be used to "hold up" other objects (points, other polygons...) and
@@ -689,10 +702,8 @@ class Surface(root):
     
     def lock(self):
         """
-        Precomputes some parameters to run faster specific methods like
-        Surface.classify.
-        
-        Lock the Polygons and generates an index of the sorted areas.
+        Lock the Polygons in the Surface to run faster specific methods 
+		like Surface.classify.
         
         :returns: None
         """
@@ -714,28 +725,26 @@ class Surface(root):
         in the Surface and a set of points.
         
         This function enhances the performance of ``Polygon.contains()``
-        by verifying only the points which are inside the z=0 bounding
-        box of the polygon. To do it fast, it sorts the points and then
-        apply ``Polygon.pip()``.
+		when used with multiple non-overlapping polygons (stored in a 
+		Surface) by verifying only the points which are inside the z=0 
+		bounding box of each polygon. To do it fast, it sorts the points
+		and then apply ``Polygon.pip()`` for each Polygon.
         
         :param points: list of (x, y, z) or (x, y) coordinates of the
             points to check. (The z value will not be taken into 
             account).
         :type points: ndarray (shape=(N, 2 or 3))
-        :param edge: If True, consider the points in the Polygon's edge
-            inside the Polygon.
+        :param edge: If True, consider the points in a Polygon's edge
+            inside a Polygon.
         :type edge: bool
         :param col: Column to sort or already sorted.
         :type col: int
         :param already_sorted: If True, the method will consider that
-            the ``points`` are already sorted by the column ``col``.
+            the *points* are already sorted by the column *col*.
         :type already_sorted: bool
         :returns: Index of the Polygon to which each point belongs. 
             -1 if outside the Surface.
         :rtype: ndarray (dtpye=int)
-
-        .. warning:: It is supposed that the Polygons do not overlap 
-            each other.
         """
         xy = points[:, :2].copy()
         radius = 1e-10 if edge else 0
@@ -764,10 +773,10 @@ class Surface(root):
     def intersect_with(self, polygon):
         """
         Calculates the intersection between the polygons in this surface
-        and other polygon in the z=0 projection.
+        and other polygon, in the z=0 projection.
         
-        This method rely fully on the ``shapely.Polygon.intersect_with()``
-        method. The way this method is used is intersecting this polygon
+        This method rely on the ``shapely.Polygon.intersects()`` method.
+        The way this method is used is intersecting this polygon 
         recursively with all identified polygons which overlaps with it
         in the z=0 projection.
         
@@ -808,7 +817,7 @@ class Surface(root):
 
     def get_seed(self):
         """
-        Collect the required information to generate a data estructure 
+        Collects the required information to generate a data estructure 
         that can be used to recreate exactly the same geometry object
         via *\*\*kwargs*.
         
@@ -841,7 +850,6 @@ class Surface(root):
         :returns: (x, y, z) arrays
         :rtype: ndarray (shape=(N, 3))
         """
-        
         for poly in self:
             points = poly.get_height(points, edge=edge, full=True)
         for hole in self.holes:
@@ -874,7 +882,7 @@ class Surface(root):
             * Are contiguous.
             * The result is convex.
             
-        This method is very useful reducing the number the items and
+        This method is very useful at reducing the number the items and,
         therefore, the shadowing time computing. Before override this
         instance, it is saved and can be restored with ``.restore()``
         
@@ -887,9 +895,6 @@ class Surface(root):
             actually convex. The convex hull of the union is directly 
             calculated. For this reason, it is very important to visualy
             check the solution.
-            
-        .. warning:: Some information from the previous state of the 
-            surface will be removed.
         """
         from pyny3d.utils import bool2index
         from scipy.spatial import ConvexHull
@@ -955,9 +960,9 @@ class Surface(root):
     @staticmethod        
     def contiguous(polygons):
         """
-        Check whether a set of convex polygons are all contiguous. Two 
-        polygons are considered contiguous if they share, at least, two
-        vertices.
+        Static method. Check whether a set of convex polygons are all 
+		contiguous. Two polygons are considered contiguous if they 
+		share, at least, one side (two vertices).
         
         This is not a complete verification, it is a very simplified
         one. For a given set of polygons this method will verify that 
@@ -1087,21 +1092,23 @@ class Surface(root):
         """
         return Space(Place(self)).move(d_xyz, inplace=False)[0].surface
 
-    def zrotate(self, angle, axis=None):
+    def rotate(self, angle, direction='z', axis=None):
         """
         Returns a new Surface which is the same but rotated about a 
-        vertical axis.
+        given axis.
         
         If the axis given is ``None``, the rotation will be computed
         about the Surface's centroid.
         
         :param angle: Rotation angle (in radians)
         :type angle: float
+        :param direction: Axis direction ('x', 'y' or 'z')
+        :type direction: str
         :param axis: Point in z=0 to perform as rotation axis
         :type axis: tuple (len=2 or 3) or None
         :returns: ``pyny.Surface``
         """
-        return Space(Place(self)).zrotate(angle, axis)[0].surface
+        return Space(Place(self)).rotate(angle, direction, axis)[0].surface
 
     def mirror(self, axes='x'):
         """
@@ -1115,7 +1122,7 @@ class Surface(root):
 
     def matrix(self, x=(0, 0), y=(0, 0) , z=(0, 0)):
         """
-        Copy the ``pyny.Surface`` itself along a 3D matrix given by the 
+        Copy the ``pyny.Surface`` along a 3D matrix given by the 
         three tuples x, y, z:        
 
         :param x: Number of copies and distance between them in this
@@ -1134,7 +1141,7 @@ class Polyhedron(root):
     Under the hood, ``pyny.Polyhedron`` class uses the ``pyny.Surface``
     infrastructure to store and operate with the faces (Polygons). This
     ``pyny.Surface`` can be found in ``Polyhedron.aux_surface``.
-    
+
     Instances of this class work as iterable object. When indexed, 
     returns the ``pyny.Polygons`` which conform it.
 
@@ -1147,11 +1154,10 @@ class Polyhedron(root):
     :returns: None
     
     .. note:: \* A concave or open polyhedron will not produce any 
-        errors and the code will probably work fine but it is important 
-        to keep in mind that ``pyny3d`` was created to work specifically
-        with convex and closed bodies. Future versions of ``pyny3d`` 
-        will incorporate functionalities that will raise an error for 
-        concave or open Polyhedras.
+        error and the code will probably work fine but it is important 
+        to keep in mind that *pyny3d* was created to work specifically
+        with convex and closed bodies and you will probably get errors
+        later in other parts of the code.
     
     .. warning:: This object do NOT check the contiguity of the 
         polygons or whether the polyhedron is closed or not, even it is
@@ -1170,7 +1176,6 @@ class Polyhedron(root):
         :returns: A new ``pyny.Polyhedron``
         :rtype: ``pyny.Polyhedron``
         """
-        # import geoms as pyny
         return Polyhedron(**seed)
 
     @staticmethod
@@ -1178,10 +1183,12 @@ class Polyhedron(root):
         """
         Static method. Creates a closed ``pyny.Polyhedron`` connecting 
         two polygons. Both polygons must have the same number of 
-        vertices.
+        vertices. The faces of the Polyhedron created have to be planar, 
+        otherwise, an error will be raised.
         
-        The rest of its faces will be generated by matching the 
-        polygons' vertices two by two.
+        The Polyhedron will have the *poly1* and *poly2* as "top" and 
+        "bottom" and the rest of its faces will be generated by matching
+        the polygons' vertices in twos.
         
         :param poly1: Origin polygon
         :type poly1: ``pyny.Polygon`` or ndarray (shape=(N, 3))
@@ -1217,7 +1224,7 @@ class Polyhedron(root):
 
     def get_seed(self):
         """
-        Collect the required information to generate a data estructure 
+        Collects the required information to generate a data estructure 
         that can be used to recreate exactly the same geometry object
         via *\*\*kwargs*.
         
@@ -1263,23 +1270,25 @@ class Polyhedron(root):
         space = Space(Place(polygon, polyhedra=self))
         return space.move(d_xyz, inplace=False)[0].polyhedra[0]
 
-    def zrotate(self, angle, axis=None):
+    def rotate(self, angle, direction='z', axis=None):
         """
         Returns a new Polyhedron which is the same but rotated about a 
-        vertical axis.
+        given axis.
         
         If the axis given is ``None``, the rotation will be computed
         about the Polyhedron's centroid.
         
         :param angle: Rotation angle (in radians)
         :type angle: float
+        :param direction: Axis direction ('x', 'y' or 'z')
+        :type direction: str
         :param axis: Point in z=0 to perform as rotation axis
         :type axis: tuple (len=2 or 3) or None
         :returns: ``pyny.Polyhedron``
         """
         polygon = np.array([[0,0], [0,1], [1,1]])
         space = Space(Place(polygon, polyhedra=self))
-        return space.zrotate(angle, axis)[0].polyhedra[0]
+        return space.rotate(angle, direction, axis)[0].polyhedra[0]
 
     def mirror(self, axes='x'):
         """
@@ -1295,7 +1304,7 @@ class Polyhedron(root):
 
     def matrix(self, x=(0, 0), y=(0, 0) , z=(0, 0)):
         """
-        Copy the ``pyny.Polyhedron`` itself along a 3D matrix given by the 
+        Copy the ``pyny.Polyhedron`` along a 3D matrix given by the 
         three tuples x, y, z:        
 
         :param x: Number of copies and distance between them in this
@@ -1311,7 +1320,7 @@ class Polyhedron(root):
 
 class Place(root):
     """
-    Agregates one ``pyny.Surface``, one Set of points and an indefinite
+    Aggregates one ``pyny.Surface``, one Set of points and an indefinite
     number of ``pyny.Polyhedra``.
     
     Represents the union of a surface with an unlimited number of 
@@ -1423,7 +1432,7 @@ class Place(root):
         Surface.
         
         This method gives the possibility to store the computed points
-        along with the Place's set of points. It also make possible to
+        along with the Place's set of points. It also makes possible to
         add an extra height (z value) to these points.
         
         The points outside the object will have a NaN value in the
@@ -1454,8 +1463,8 @@ class Place(root):
 
     def mesh(self, mesh_size=1, extra_height=0.1, edge=True, attach=True):
         """
-        Generates a set of points in a mesh that covers the whole Place
-        and computes their height.
+        Generates a set of points distributed in a mesh that covers the 
+		whole Place and computes their height.
         
         Generates a xy mesh with a given mesh_size in the 
         Place.surface's domain and computes the Surface's height for the
@@ -1514,16 +1523,16 @@ class Place(root):
     def add_extruded_obstacles(self, top_polys, make_ccw=True):
         """
         Add polyhedras to the Place by giving their top polygon and
-        applying extrusion along the z axis.
+        applying extrusion along the z axis. The resulting polygon
+        from the intersection will be declared as a hole in the Surface.
         
-        :param top_polys: Polygons to be extruded downwards to the 
-            Surface.
+        :param top_polys: Polygons to be extruded to the Surface.
         :type top_polys: list of ``pyny.Polygon``
         :param make_ccw: If True, points will be sorted ccw.
         :type make_ccw: bool
         :returns: None
 
-        .. note:: When a top polygon is projected downwards and it
+        .. note:: When a top polygon is projected and it
             instersects multiple Surface's polygons, a independent
             polyhedron will be created for each individual 
             intersection\*.
@@ -1557,7 +1566,7 @@ class Place(root):
             
     def get_seed(self):
         """
-        Collect the required information to generate a data estructure 
+        Collects the required information to generate a data estructure 
         that can be used to recreate exactly the same geometry object
         via *\*\*kwargs*.
         
@@ -1587,7 +1596,7 @@ class Place(root):
         return polyhedra + self.surface.get_plotable3d()
 
     def iplot(self, c_poly='default', c_holes='default', c_sop='r',
-              s_sop=25, extra_height=0.2, ret=False, ax=None):
+              s_sop=25, extra_height=0, ret=False, ax=None):
         """
         Improved plot that allows to plot polygons and holes in
         different colors and to change the size and the color of the
@@ -1637,21 +1646,23 @@ class Place(root):
         """
         return Space(self).move(d_xyz, inplace=False)[0]
 
-    def zrotate(self, angle, axis=None):
+    def rotate(self, angle, direction='z', axis=None):
         """
         Returns a new Place which is the same but rotated about a 
-        vertical axis.
+        given axis.
         
         If the axis given is ``None``, the rotation will be computed
         about the Place's centroid.
         
         :param angle: Rotation angle (in radians)
         :type angle: float
+        :param direction: Axis direction ('x', 'y' or 'z')
+        :type direction: str
         :param axis: Point in z=0 to perform as rotation axis
         :type axis: tuple (len=2 or 3) or None
         :returns: ``pyny.Place``
         """
-        return Space(self).zrotate(angle, axis)[0]
+        return Space(self).rotate(angle, direction, axis)[0]
 
     def mirror(self, axes='x'):
         """
@@ -1665,7 +1676,7 @@ class Place(root):
 
     def matrix(self, x=(0, 0), y=(0, 0) , z=(0, 0)):
         """
-        Copy the ``pyny.Place`` itself along a 3D matrix given by the 
+        Copy the ``pyny.Place`` along a 3D matrix given by the 
         three tuples x, y, z:        
 
         :param x: Number of copies and distance between them in this
@@ -1679,9 +1690,8 @@ class Place(root):
 
 class Space(root):
     """
-    Highest geometry class. Aggregate ``pyny.Places`` to compute 
-    operations simultaneously on a group of them. It can be initialized
-    empty.
+    the highest level geometry class. It Aggregates ``pyny.Places`` to 
+    group computations. It can be initialized empty.
     
     The lower level instances will be stored in:
         * **Space.places**
@@ -1689,11 +1699,6 @@ class Space(root):
     :param places: Places or empty list.
     :type places: list of ``pyny.Place``
     :returns: None
-
-    Most of the funtionalities of this library are implemented only for
-    ``pyny.Space`` instances, such as compute shadows. Some of most 
-    handy are: :func:`move`, :func:`zrotate`, :func:`matrix` or 
-    :func:`mirror`. 
     
     Instances of this class work as iterable object. When indexed, 
     returns the ``pyny.Places`` which conform it.
@@ -1733,12 +1738,11 @@ class Space(root):
         
     def lock(self):
         """
-        Lock the Space. Precomputes the map, the seed and some necessary 
-        schedules. Speeds up the code significantly by boing most of
-        the big loops just once.
-        
-        This method is automatically launched before shadows
+        Precomputes some parameters to run faster specific methods like
+        Surface.classify. This method is automatically launched before shadows
         computation.
+		
+        :returns: None
         """
         if self.locked: return
         from pyny3d.utils import bool2index
@@ -1761,7 +1765,7 @@ class Space(root):
         ## new index
         index_bool = np.diff(index[:, 2]*1e12
                             +index[:, 1]*1e8 
-                            +index[:, 2]*1e4) != 0
+                            +index[:, 0]*1e4) != 0
         
         ## Dissemination loop
         dif = np.arange(index_bool.shape[0], dtype=int)[index_bool]+1
@@ -1790,12 +1794,20 @@ class Space(root):
         
         :returns: A new ``pyny.Space``
         :rtype: ``pyny.Space``
+        
+        .. seealso:: 
+            
+            * :func:`get_seed` 
+            * :func:`get_map`
+            * :func:`map2seed` 
+            * :func:`explode_map`
+            
         """
         return Space(**seed)
         
     def add_places(self, places, ret=False):
         """
-        Add pyny.Places to the current space.
+        Add ``pyny.Places`` to the current space.
         
         :param places: Places to add.
         :type places: list of pyny.Place
@@ -1811,8 +1823,8 @@ class Space(root):
 
     def add_spaces(self, spaces, ret=False):
         """
-        Add pyny.Spaces to the current space. In other words, it merges
-        multiple pyny.Spaces in this instance.
+        Add ``pyny.Spaces`` to the current space. In other words, it 
+		merges multiple ``pyny.Spaces`` in this instance.
         
         :param places: ``pyny.Spaces`` to add.
         :type places: list of pyny.Spaces
@@ -1837,12 +1849,21 @@ class Space(root):
 
     def get_seed(self):
         """
-        Collect the required information to generate a data estructure 
+        Collects the required information to generate a data estructure 
         that can be used to recreate exactly the same geometry object
         via *\*\*kwargs*.
         
         :returns: Object's sufficient info to initialize it.
         :rtype: dict
+        
+        .. seealso:: 
+            
+            * :func:`get_map` 
+            * :func:`map2pyny`
+            * :func:`map2seed` 
+            * :func:`explode_map`
+            
+
         """
         self.seed = {'places': [place.get_seed() for place in self]}
         return self.seed
@@ -1856,7 +1877,8 @@ class Space(root):
         
     def get_sets_of_points(self):
         """
-        Collect all the sets of points for the Places in the Space.
+        Collects all the sets of points for the Places contained in the 
+		Space.
         
         :returns: An array with the points of all ``pyny.Places`` which 
             form this ``pyny.Space``.
@@ -1866,7 +1888,7 @@ class Space(root):
         
     def get_sets_index(self):
         """
-        Return a one dimension array with the Place where the points 
+        Returns a one dimension array with the Place where the points 
         belong.
         
         :returns: The ``pyny.Place`` where the points belong.
@@ -1879,7 +1901,7 @@ class Space(root):
 
     def get_polygons(self):
         """
-        Collect all polygons for the Places in the Space.
+        Collects all polygons for the Places in the Space.
         
         :returns: The polygons which form the whole ``pyny.Space``.
         :rtype: list of ``pyny.Polygon``
@@ -1895,7 +1917,7 @@ class Space(root):
 
     def get_map(self):
         """
-        Collect all the points coordinates from this ``pyny.Space``
+        Collects all the points coordinates from this ``pyny.Space``
         instance.
         
         In order to keep the reference, it returns an index with the
@@ -1913,6 +1935,14 @@ class Space(root):
         .. note:: This method automatically stores the solution in order
             to do not repeat calculations if the user needs to call it 
             more than once.
+
+        .. seealso:: 
+            
+            * :func:`get_seed` 
+            * :func:`map2pyny`
+            * :func:`map2seed` 
+            * :func:`explode_map`
+            
         """
         seed = self.get_seed()['places'] # template
         
@@ -1957,14 +1987,23 @@ class Space(root):
  
     def map2seed(self, map_):
         """
-        Returns an altered seed from an altered map to produce a 
-        transformed ``pyny.Space``.
+        Returns a seed from an altered map. The map needs to have the 
+        structure of this ``pyny.Space``, that is, the same as
+        ``self.get_map()``.
         
         :param map_: the points, and the same order, that appear at 
             ``pyny.Space.get_map()``.
         :type map_: ndarray (shape=(N, 3))
         :returns: ``pyny.Space`` seed.
         :rtype: dict
+        
+        .. seealso:: 
+            
+            * :func:`get_seed` 
+            * :func:`get_map` 
+            * :func:`map2pyny`
+            * :func:`explode_map`
+            
         """
         seed = self.get_seed()['places'] # Template
         
@@ -1995,20 +2034,29 @@ class Space(root):
 
     def map2pyny(self, map_):
         """
-        Returns an altered version of this ``pyny.Space`` using an 
-        altered map.
+        Returns a different version of this ``pyny.Space`` using an 
+		altered map.
         
         :param map_: the points, and the same order, that appear at 
             ``pyny.Space.get_map()``.
         :type map_: ndarray (shape=(N, 3))
         :returns: ``pyny.Space``
+        
+        .. seealso:: 
+            
+            * :func:`get_seed` 
+            * :func:`get_map` 
+            * :func:`map2seed`
+            * :func:`explode_map`
+            
         """
         return self.seed2pyny(self.map2seed(map_))
         
     def explode(self):
         """
-        Collect all the polygons, holes and points in the Space packaged
-        in a list.
+        Collects all the polygons, holes and points in the Space 
+        packaged in a list. The returned geometries are not in *pyny3d*
+        form, instead the will be represented as *ndarrays*.
         
         :returns: The polygons, the holes and the points.
         :rtype: list
@@ -2036,6 +2084,14 @@ class Space(root):
         :type map_: ndarray (shape=(N, 3))
         :returns: The polygons, the holes and the points.
         :rtype: list
+        
+        .. seealso:: 
+            
+            * :func:`get_seed` 
+            * :func:`get_map` 
+            * :func:`map2pyny`
+            * :func:`map2seed`
+            
         """        
         if self.explode_map_schedule is None:
             index = map_[0]
@@ -2080,7 +2136,7 @@ class Space(root):
     def get_height(self, points, edge=True, attach=False, extra_height=0):
         """
         Launch ``pyny.Place.get_height(points)`` recursively for all 
-        the ``pyny.Place`` individually.
+        the ``pyny.Place``.
         
         The points outside the object will have a NaN value in the
         z column. These point will not be stored but it will be
@@ -2154,16 +2210,18 @@ class Space(root):
         else:
             return space
 
-    def zrotate(self, angle, axis=None):
+    def rotate(self, angle, direction='z', axis=None):
         """
         Returns a new Space which is the same but rotated about a 
-        vertical axis.
+        given axis.
         
         If the axis given is ``None``, the rotation will be computed
         about the Space's centroid.
         
         :param angle: Rotation angle (in radians)
         :type angle: float
+        :param direction: Axis direction ('x', 'y' or 'z')
+        :type direction: str
         :param axis: Point in z=0 to perform as rotation axis
         :type axis: tuple (len=2 or 3) or None
         :returns: ``pyny.Space``
@@ -2174,22 +2232,28 @@ class Space(root):
             axis = self.get_centroid()
         else:
             if len(axis) == 2: axis = np.array([axis[0], axis[1], 0])
-            
         map_ = self.get_map()[1] - axis
-        R = np.array([[np.cos(angle), -np.sin(angle), 0],
-                      [np.sin(angle), np.cos(angle), 0],
-                      [0, 0, 1]])
+        
+        ## Rotation matrix
+        c = np.cos(angle)
+        s = np.sin(angle)
+        if direction == 'z':
+            R = np.array([[c, -s, 0], [s, c, 0], [0, 0, 1]])
+        elif direction == 'y':
+            R = np.array([[c, 0, s], [0, 1, 0], [-s, 0, c]])
+        elif direction == 'x':
+            R = np.array([[1, 0, 0], [0, c, -s], [0, s, c]])
+            
         rotated_ = np.dot(R, map_.T).T
         map_ = rotated_ + axis
-        
         space = self.map2pyny(map_)
         Polygon.verify = state
         return space
 
     def matrix(self, x=(0, 0), y=(0, 0) , z=(0, 0), inplace=True):
         """
-        Copy the ``pyny.Space`` itself along a 3D matrix given by the 
-        three tuples x, y, z:        
+        Copy the ``pyny.Space`` along a 3D matrix given by the three
+        tuples x, y, z:        
 
         :param x: Number of copies and distance between them in this
             direction.
@@ -2269,7 +2333,7 @@ class Space(root):
         list.
         
         In its conception, this method was created as a tool for the 
-        shadows computation by calculating "what is in front and what 
+        shadows computation to calculate "what is in front and what 
         is behind to the look of the Sun". For this reason, the 
         direction is given in spherical coordinates by two angles: the 
         azimth and the zenit.
@@ -2295,6 +2359,12 @@ class Space(root):
         :type plot: bool
         :returns: Exploded ``pyny.Space``
         :rtype: list
+        
+        .. note:: Before assume that this method do exactly what it is 
+            supposed to do, it is highly recommended to visualy verify 
+            throught the *plot=True* argument. It is easy to introduce
+            the angles in a different sign criteria, among other 
+            frequent mistakes.
         """
         self.lock()
         
@@ -2318,14 +2388,17 @@ class Space(root):
         return poly_hole_points
             
     def iplot(self, places=-1, c_poly='default', c_holes='default', 
-              c_sop='r', s_sop=25, ret=False, ax=None):
+              c_sop='r', s_sop=25, extra_height=0, ret=False, ax=None):
         """
-        Improved plot that allows to plot polygons and holes in
+        Improved plot that allows to visualize the Places in the Space
+        selectively. It also allows to plot polygons and holes in
         different colors and to change the size and the color of the
         set of points.
         
         The points can be plotted accordingly to a ndarray colormap.
         
+        :param places: Indexes of the Places to visualize.
+        :type places: int, list or ndarray
         :param c_poly: Polygons color.
         :type c_poly: matplotlib color, 'default' or 't' (transparent)
         :param c_holes: Holes color.
@@ -2356,7 +2429,8 @@ class Space(root):
         
         aux_space = Space([self[i] for i in places])
         for place in aux_space:
-            ax = place.iplot(c_poly, c_holes, c_sop, s_sop, ret=True, ax=ax)
+            ax = place.iplot(c_poly, c_holes, c_sop, s_sop, extra_height,
+                             ret=True, ax=ax)
         aux_space.center_plot(ax)
         if ret: return ax
 
@@ -2372,15 +2446,16 @@ class Space(root):
         Call ``ShadowsManager.run()`` to start the shadowing 
         computations.
         
-        The 'auto' initialization pre-sets all the minimum parameters to
-        run the computations\*. The available resolutions are:
+        The 'auto' initialization pre-sets all the required parameters 
+        to run the computations\*. The available resolutions are:
         
             * 'low'
             * 'mid'
             * 'high'
             
         The 'auto' mode will use all the arguments different than 
-        ``None`` and the ``set_of_points`` of the ``pyny.Space`` if any.
+        ``None`` and the ``set_of_points`` of this ``pyny.Space`` if 
+        any.
             
         :param data: Data timeseries to project on the 3D model 
             (radiation, for example).
@@ -2398,9 +2473,6 @@ class Space(root):
             Voronoi diagram.
         :type init: str
         :returns: ``ShadowsManager`` object
-        
-        .. warning:: \* The latitude is set in 0.65 rads (37º) by 
-            default.
         '''
         from pyny3d.shadows import ShadowsManager
         
@@ -2429,6 +2501,3 @@ class Space(root):
         elif init == 'empty':
             return ShadowsManager(self, data=data, t=t, dt=dt, 
                                   latitude=latitude)
-
-
-
