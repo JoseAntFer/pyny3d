@@ -77,24 +77,6 @@ Installing pyny3d
 ~~~~~~~~~~~~~~~~~
 Use the pip install way: ``$ pip install pyny3d``
    
-Roadmap and Maintenance
-~~~~~~~~~~~~~~~~~~~~~~~
-*pyny3d* is far from be the full-featured and optimized library that is expected. 
-Releasing alpha versions allows me to start receiving feedback from users and will 
-help me to continue developing better and faster.
-
-On the other hand, I want to advice that the inclusion of non-straight lines
-or non-planar surfaces are not expected. In the same way, all the computations
-will be guaranteed only for convex polygons and bodies.
-
-Upcoming improvements
-~~~~~~~~~~~~~~~~~~~~~
-
-    * ``.stretch()`` method.
-    * Calculate volumes.
-    * Extrude polyhedra on arbitrary directions.
-    * Rotate about arbitrary axes.
-
 Bugs
 ~~~~
 
