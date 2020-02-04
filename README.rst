@@ -1,5 +1,7 @@
 README
 ======
+04/02/2020 Update: **Sadly, this library has been discontinued and I cannot provide support anymore.**
+
 
 .. contents::
     :local:
